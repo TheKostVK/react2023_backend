@@ -1,13 +1,12 @@
 import './App.css';
 import './mycss.css';
-import {Card, Row} from 'antd'
+import {Card} from 'antd'
 import React, {useState} from "react";
 
 
 // Функциональный компонент - четкий, модный, молодежный
 function App1() {
     const [users, setUsers] = useState([])
-    const [userPosts, setPosts] = useState([])
     const [usersButtonTEXT, setUsersButtonTEXT] = useState(['Получить список пользователей'])
 
     // Обновляет текст на кнопке получения списка пользователей
@@ -25,13 +24,6 @@ function App1() {
                     setUsers(res)
                 }
             })
-        // Получение постов
-        fetch('https://jsonplaceholder.typicode.com/posts').then(Posts => Posts.json()).then(Posts => {
-            if (Posts && Array.isArray(Posts) && Posts.length > 0) {
-                setPosts(Posts);
-                console.log(Posts)
-            }
-        })
         // Обновление текста на кнопке
         updateButtonTEXT('Обновить список пользователей');
     }
@@ -73,22 +65,6 @@ function App1() {
                                 <strong>Website: </strong>
                                 <a href={user.website}>{user.website}</a>
                             </p>
-                            <div style={{border: '1px solid #000', borderRadius: 2}}>
-                                <Row style={{margin: 10}} gutter={10}>
-                                    {
-                                        userPosts.filter(post => post.userId === user.id)
-                                            .map(post => {
-                                                return (
-                                                    <Card title={post.title} style={{margin: 10, width: '100%'}}
-                                                          headStyle={{background: 'black', color: '#fff'}}>
-                                                        <p>{post.body}</p>
-                                                    </Card>
-                                                )
-                                            }
-                                        )
-                                    }
-                                </Row>
-                            </div>
                         </Card>);
                 })
                 }
@@ -98,4 +74,4 @@ function App1() {
 }
 
 
-    export default App1;
+export default App1;
