@@ -1,6 +1,6 @@
 import './App.css';
 import './mycss.css';
-import {Card, Row} from 'antd'
+import {Card} from 'antd'
 import React, {useState} from "react";
 
 
@@ -37,7 +37,7 @@ function App1() {
         background: '#ccc'
     }
     const styleDefault = {
-        margin: 10
+        margin: 15
     }
     return (
         <>
@@ -49,13 +49,21 @@ function App1() {
                 <p className='subsection-performance-headline'
                    style={styleDefault}>{'Дата последнего обновления: ' + new Date().toLocaleString() + ''}</p>
             }
-            <div style={{margin: 50}}>
+            <div>
                 {users.length > 0 && users.map(user => {
                     return (
-                        <Card title={'Name: ' + user.name} key={Math.random()}>
+                        <Card style={{margin: 15}} title={user.name} key={Math.random()}>
                             <p>
                                 <strong>Email: </strong>
                                 <strong style={{color: 'red'}}>{user.email}</strong>
+                            </p>
+                            <p>
+                                <strong>Phone: </strong>
+                                <strong style={{color: '#6A5ACD'}}>{user.phone}</strong>
+                            </p>
+                            <p>
+                                <strong>Website: </strong>
+                                <a href={user.website}>{user.website}</a>
                             </p>
                         </Card>);
                 })
