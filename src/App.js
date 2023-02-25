@@ -66,30 +66,34 @@ function App1() {
                                 <strong style={{color: 'red'}}>{user.email}</strong>
                             </p>
                             <p>
-                                <strong>Phone: </strong>
+                                <strong>Номер телефона: </strong>
                                 <strong style={{color: '#6A5ACD'}}>{user.phone}</strong>
                             </p>
                             <p>
-                                <strong>Website: </strong>
+                                <strong>Веб-сайт: </strong>
                                 <a href={user.website}>{user.website}</a>
                             </p>
                             <div style={{border: '1px solid #000', borderRadius: 2}}>
-                                <Row  style={{margin: 10}} gutter={10}>
-                                    {
-                                        userPosts.filter(post => post.userId === user.id)
-                                            .map(post => {
-                                                return (
-                                                    <Card title={post.title} style={{margin: 10, width: "100%"}}
-                                                          headStyle={{background: 'black', color: '#fff'}}>
-                                                        <p>{post.body}</p>
-                                                    </Card>
+                                <details>
+                                    <summary>Нажмите чтобы увидеть посты пользователя</summary>
+                                    <Row style={{margin: 10}} gutter={10}>
+                                        {
+                                            userPosts.filter(post => post.userId === user.id)
+                                                .map(post => {
+                                                        return (
+                                                            <Card title={post.title} style={{margin: 10, width: "100%"}}
+                                                                  headStyle={{background: 'black', color: '#fff'}}>
+                                                                <p>{post.body}</p>
+                                                            </Card>
+                                                        )
+                                                    }
                                                 )
-                                            }
-                                        )
-                                    }
-                                </Row>
+                                        }
+                                    </Row>
+                                </details>
                             </div>
-                        </Card>);
+                        </Card>
+                    );
                 })
                 }
             </div>
