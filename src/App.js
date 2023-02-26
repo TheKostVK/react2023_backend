@@ -1,7 +1,7 @@
 import './App.css';
 import './mycss.css';
-import { Card, Row } from 'antd';
-import React, { useState, useEffect } from 'react';
+import { Card } from 'antd';
+import React, { useState } from 'react';
 
 function App() {
     // Состояния для списка пользователей, постов пользователя и кнопки
@@ -37,6 +37,30 @@ function App() {
         }
     };
 
+    // Функция для получения постов пользователей и списка пользователей
+    const getUsersAndPosts = async () => {
+        try {
+            const [usersResponse, postsResponse] = await Promise.all([
+                fetch('https://jsonplaceholder.typicode.com/users'),
+                fetch('https://jsonplaceholder.typicode.com/posts'),
+            ]);
+            const [usersData, postsData] = await Promise.all([
+                usersResponse.json(),
+                postsResponse.json(),
+            ]);
+            // Если данные получены, сохраняем их в состояние
+            if (Array.isArray(usersData) && usersData.length > 0) {
+                setUsers(usersData);
+            }
+            if (Array.isArray(postsData) && postsData.length > 0) {
+                setUserPosts(postsData);
+            }
+        } catch (error) {
+            console.error('Ошибка получения данных', error);
+        }
+    };
+
+
     // Функция, которая вызывается при нажатии на кнопку "Получить список пользователей"
     const handleGetUsers = () => {
         // Получаем список пользователей и их постов
@@ -52,7 +76,7 @@ function App() {
     };
 
     return (
-        <>
+        <div>
             <h1 style={{margin: 15}}>Список пользователей:</h1>
             <button style={{margin: 15}} className="button-main" type="button" onClick={handleGetUsers}>
                 {usersButtonLabel}
@@ -81,28 +105,30 @@ function App() {
                             </p>
                             <div style={{ border: '1px solid #000', borderRadius: 2 }}>
                                 <details>
-                                    <summary>Нажмите чтобы увидеть посты пользователя</summary>
-                                    <Row style={{ margin: 10 }} gutter={10}>
-                                        {userPostList.map((post) => {
-                                            return (
-                                                <Card
-                                                    title={post.title}
-                                                    style={{ margin: 10, width: '100%' }}
-                                                    headStyle={{ background: 'black', color: '#fff' }}
-                                                    key={post.id}
-                                                >
-                                                    <p>{post.body}</p>
-                                                </Card>
-                                            );
-                                        })}
-                                    </Row>
+                                    <summary style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                                        Посты пользователя
+                                    </summary>
+                                    {userPostList.length > 0 ? (
+                                        userPostList.map((post) => (
+                                            <Card
+                                                title={post.title}
+                                                style={{ margin: 10 }}
+                                                headStyle={{ background: 'black', color: '#fff' }}
+                                                key={post.id}
+                                            >
+                                                <p>{post.body}</p>
+                                            </Card>
+                                        ))
+                                    ) : (
+                                        <p style={{ margin: 10 }}>Постов нет</p>
+                                    )}
                                 </details>
                             </div>
                         </Card>
                     );
                 })}
             </div>
-        </>
+        </div>
     );
 }
 
