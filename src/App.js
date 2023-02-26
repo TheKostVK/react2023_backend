@@ -53,8 +53,8 @@ function App() {
                 {usersButtonLabel}
             </button>
             {usersButtonLabel !== 'Получить список пользователей' && (
-                <p style={{margin: 15}} className="subsection-performance-headline">
-                    {'Дата последнего обновления: ' + formatDate(new Date())}
+                <p style={{margin: 15}}>
+                    Дата последнего обновления: <strong className="subsection-performance-headline">{formatDate(new Date())}</strong>
                 </p>
             )}
             <div>
