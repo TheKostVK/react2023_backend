@@ -1,7 +1,11 @@
 import './App.css';
 import './mycss.css';
+import {HelloWorld, MainNavBar} from './components/';
 import {Card} from 'antd';
 import React, {useState} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Routes} from "react-router-dom";
+
 
 function App() {
     // Состояния для списка пользователей, постов пользователя и кнопки
@@ -47,59 +51,65 @@ function App() {
     };
 
     return (
-        <div>
-            <h1 style={{margin: 15}}>Список пользователей:</h1>
-            <button style={{margin: 15}} className="button-main" type="button" onClick={handleGetUsers}>
-                {usersButtonLabel}
-            </button>
-            {usersButtonLabel !== 'Получить список пользователей' && (
-                <p style={{margin: 15}}>
-                    Дата последнего обновления: <strong className="subsection-performance-headline">{formatDate(new Date())}</strong>
-                </p>
-            )}
+        <MainNavBar>
+            <Routes>
+
+            </Routes>
             <div>
-                {users.map((user) => {
-                    const userPostList = userPosts.filter((post) => post.userId === user.id);
-                    return (
-                        <Card style={{margin: 15}} title={user.name} key={user.id}>
-                            <p>
-                                <strong>Email: </strong>
-                                <strong style={{color: 'red'}}>{user.email}</strong>
-                            </p>
-                            <p>
-                                <strong>Номер телефона: </strong>
-                                <strong style={{color: '#6A5ACD'}}>{user.phone}</strong>
-                            </p>
-                            <p>
-                                <strong>Веб-сайт: </strong>
-                                <a href={user.website}>{user.website}</a>
-                            </p>
-                            <div style={{border: '1px solid #000', borderRadius: 2}}>
-                                <details>
-                                    <summary style={{fontWeight: 'bold', marginBottom: 10}}>
-                                        Посты пользователя
-                                    </summary>
-                                    {userPostList.length > 0 ? (
-                                        userPostList.map((post) => (
-                                            <Card
-                                                title={post.title}
-                                                style={{margin: 10}}
-                                                headStyle={{background: 'black', color: '#fff'}}
-                                                key={post.id}
-                                            >
-                                                <p>{post.body}</p>
-                                            </Card>
-                                        ))
-                                    ) : (
-                                        <p style={{margin: 10}}>Постов нет</p>
-                                    )}
-                                </details>
-                            </div>
-                        </Card>
-                    );
-                })}
+                <h1 style={{margin: 15}}>Список пользователей:</h1>
+                <button style={{margin: 15}} className="button-main" type="button" onClick={handleGetUsers}>
+                    {usersButtonLabel}
+                </button>
+                {usersButtonLabel !== 'Получить список пользователей' && (
+                    <p style={{margin: 15}}>
+                        Дата последнего обновления: <strong
+                        className="subsection-performance-headline">{formatDate(new Date())}</strong>
+                    </p>
+                )}
+                <div>
+                    {users.map((user) => {
+                        const userPostList = userPosts.filter((post) => post.userId === user.id);
+                        return (
+                            <Card style={{margin: 15}} title={user.name} key={user.id}>
+                                <p>
+                                    <strong>Email: </strong>
+                                    <strong style={{color: 'red'}}>{user.email}</strong>
+                                </p>
+                                <p>
+                                    <strong>Номер телефона: </strong>
+                                    <strong style={{color: '#6A5ACD'}}>{user.phone}</strong>
+                                </p>
+                                <p>
+                                    <strong>Веб-сайт: </strong>
+                                    <a href={user.website}>{user.website}</a>
+                                </p>
+                                <div style={{border: '1px solid #000', borderRadius: 2}}>
+                                    <details>
+                                        <summary style={{fontWeight: 'bold', marginBottom: 10}}>
+                                            Посты пользователя
+                                        </summary>
+                                        {userPostList.length > 0 ? (
+                                            userPostList.map((post) => (
+                                                <Card
+                                                    title={post.title}
+                                                    style={{margin: 10}}
+                                                    headStyle={{background: 'black', color: '#fff'}}
+                                                    key={post.id}
+                                                >
+                                                    <p>{post.body}</p>
+                                                </Card>
+                                            ))
+                                        ) : (
+                                            <p style={{margin: 10}}>Постов нет</p>
+                                        )}
+                                    </details>
+                                </div>
+                            </Card>
+                        );
+                    })}
+                </div>
             </div>
-        </div>
+        </MainNavBar>
     );
 }
 

@@ -5,7 +5,7 @@
 /.pnp
 .idea
 .pnp.js
-/data_my
+/test
 
 # testing
 /coverage
