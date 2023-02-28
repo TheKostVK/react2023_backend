@@ -1,106 +1,23 @@
-html, body {
-    font-family: "Open Sans", "Ubuntu", Verdana, Arial, Tahoma, Sans-serif;
-    background: #f5f5f5;
-    color: #020202;
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
-/*
-	Style definitions for table view
-*/
-
-#schedule-table {
-    font-size: 10pt;
-    margin: 0 auto;
+.nav-menu li {
+    padding: 10px;
 }
 
-
-#schedule-table td, #schedule-table th {
-    border: 1.5px solid #e1e1e1;
-    text-align: center;
-    width: 15%;
-}
-
-#schedule-table th {
-    background: #e0e0e0;
-    font-style: normal;
-    font-weight: normal;
-}
-
-#schedule-table td {
-    font-size: 9pt;
-}
-
-.table-lesson-num {
-    width: 130px;
-    font-weight: 300;
-    font-size: 12pt;
-}
-
-.table-lesson-numbers {
-
-}
-
-.table-subgroups{
-}
-
-.table-weekdays {
-    height: 100px;
-    font-size: 10pt;
-}
-
-
-.table-subgroup {
-    background: #e5ffe5;
-}
-
-.table-sg-name {
-    background: #606060;
-    color: #f5f5f5;
-}
-
-.table-subject {
-
-}
-
-.table-room{
-
-}
-
-.table-teacher, .table-room {
-    color: #5d5d5d;
-}
-
-.table-teacher a, .table-room a {
-    color: #707070;
+.nav-menu li a {
     text-decoration: none;
+    color: #333;
+    transition: all 0.2s ease-in-out;
 }
 
-.table-lessontype {
-    color: #505050;
-}
-
-.table-single {
-    background: #cecefd;
-}
-
-.color-online {
-    background: #ffd8ae;
-}
-
-.color-lecture {
-    background: #beffff;
-}
-
-.color-together {
-    background: #aec0fc;
-}
-
-.color-zach{
-    background: #ffadb7;
-}
-
-.table-empty {
-    background: #f0f0f0;
+.nav-menu li a:hover {
+    color: #ff5500;
 }
 .subsection-performance-headline {
     font-style: normal;

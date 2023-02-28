@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {MyContext} from "./context/myContext";
+import {BrowserRouter} from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -13,9 +14,11 @@ const data = {
 
 root.render(
   <React.StrictMode>
-      <MyContext.Provider value={data}>
-            <App />
-      </MyContext.Provider>
+      <BrowserRouter>
+          <MyContext.Provider value={data}>
+                <App />
+          </MyContext.Provider>
+      </BrowserRouter>
   </React.StrictMode>
 );
 

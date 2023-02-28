@@ -1,13 +1,32 @@
 import './App.css';
 import './mycss.css';
+import {HelloWorld, MainNavBar} from './components/';
 import {Card} from 'antd';
 import React, {useState} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Route, Routes} from "react-router-dom";
+
 
 function App() {
+    return (
+        <MainNavBar>
+            <Routes>
+                <Route path='/' element={<HomePage />} />
+                <Route path='/hello/:id' element={<HelloWorld />} />
+                <Route path='*' element={<NotFoundError />} />
+            </Routes>
+            <div></div>
+        </MainNavBar>
+    );
+}
+
+
+const HomePage = () => {
     // Состояния для списка пользователей, постов пользователя и кнопки
     const [users, setUsers] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
     const [usersButtonLabel, setUsersButtonLabel] = useState('Получить список пользователей');
+
 
     // Функция для получения постов пользователей и списка пользователей
     const getUsersAndPosts = async () => {
@@ -28,25 +47,31 @@ function App() {
                 setUserPosts(postsData);
             }
         } catch (error) {
-            console.error('Ошибка получения данных', error);
+            console.error('Ошибка получения данных: ', error);
         }
     };
 
 
     // Функция, которая вызывается при нажатии на кнопку "Получить список пользователей"
-    const handleGetUsers = () => {
-        // Получаем список пользователей и их постов
-        getUsersAndPosts()
-        // Обновляем надпись на кнопке
-        setUsersButtonLabel('Обновить список пользователей');
+    const handleGetUsers = async () => {
+        try {
+            // Получаем список пользователей и их постов
+            await getUsersAndPosts();
+            // Обновляем надпись на кнопке
+            setUsersButtonLabel('Обновить список пользователей');
+        } catch (error) {
+            console.error('Ошибка получения списка пользователей: ',error);
+        }
     };
+
 
     // Функция для форматирования даты
     const formatDate = (date) => {
         return new Intl.DateTimeFormat('ru-RU').format(date);
     };
 
-    return (
+
+    return(
         <div>
             <h1 style={{margin: 15}}>Список пользователей:</h1>
             <button style={{margin: 15}} className="button-main" type="button" onClick={handleGetUsers}>
@@ -54,7 +79,8 @@ function App() {
             </button>
             {usersButtonLabel !== 'Получить список пользователей' && (
                 <p style={{margin: 15}}>
-                    Дата последнего обновления: <strong className="subsection-performance-headline">{formatDate(new Date())}</strong>
+                    Дата последнего обновления: <strong
+                    className="subsection-performance-headline">{formatDate(new Date())}</strong>
                 </p>
             )}
             <div>
@@ -100,7 +126,21 @@ function App() {
                 })}
             </div>
         </div>
-    );
+    )
 }
+
+
+const NotFoundError = () => {
+    const message = `Запрошенная страница не существует.`;
+    const error = new Error(message);
+    error.statusCode = 404;
+    return (
+        <div>
+            <h1>404 Page not found</h1>
+            <p>Запрошенная страница не существует.</p>
+        </div>
+    );
+};
+
 
 export default App;
