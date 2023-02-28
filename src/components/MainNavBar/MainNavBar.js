@@ -1,6 +1,7 @@
 // Навигационный бар
 import React from "react";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+
 
 export const MainNavBar = (props) => {
     return (
@@ -9,10 +10,13 @@ export const MainNavBar = (props) => {
                 <nav className="navbar">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href="/">Главная</a>
+                            <Link to="/" className="nav-link">Главная</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/hello">Hello Page</a>
+                            <Link to="/hello" className="nav-link">Hello</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/hello/25" state={state} className="nav-link">Hello ID</Link>
                         </li>
                     </ul>
                 </nav>

@@ -11,7 +11,9 @@ function App() {
     return (
         <MainNavBar>
             <Routes>
-                <Route path='/' element={ <HomePage /> }/>
+                <Route path='/' element={<HomePage />} />
+                <Route path='/hello/:id' element={<HelloWorld />} />
+                <Route path='*' element={<NotFoundError />} />
             </Routes>
             <div></div>
         </MainNavBar>
@@ -24,6 +26,7 @@ const HomePage = () => {
     const [users, setUsers] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
     const [usersButtonLabel, setUsersButtonLabel] = useState('Получить список пользователей');
+
 
     // Функция для получения постов пользователей и списка пользователей
     const getUsersAndPosts = async () => {
@@ -66,6 +69,8 @@ const HomePage = () => {
     const formatDate = (date) => {
         return new Intl.DateTimeFormat('ru-RU').format(date);
     };
+
+
     return(
         <div>
             <h1 style={{margin: 15}}>Список пользователей:</h1>
@@ -123,5 +128,19 @@ const HomePage = () => {
         </div>
     )
 }
+
+
+const NotFoundError = () => {
+    const message = `Запрошенная страница не существует.`;
+    const error = new Error(message);
+    error.statusCode = 404;
+    return (
+        <div>
+            <h1>404 Page not found</h1>
+            <p>Запрошенная страница не существует.</p>
+        </div>
+    );
+};
+
 
 export default App;

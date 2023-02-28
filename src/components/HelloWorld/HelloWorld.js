@@ -3,21 +3,19 @@ import {MyContext} from "../../context/myContext";
 import { ButtonUI } from "../../components/"
 
 
-export const HelloWorld = (props) => {
-    const context = useContext(MyContext)
-    console.log('context', context)
+export const HelloWorld = () => {
+    const context = useContext(MyContext);
+    const myRef = useRef(null);
 
-    const myRef = useRef()
+    const handleSubmit = () => {
+        console.log('Succes! Value: ', myRef.current.value);
+    };
 
-    const submit = () => {
-        console.log('myRef', myRef)
-        console.log('Succes! Value: ', myRef.current.value)
-    }
-    return(
-        <div style={{margin: 15}}>
+    return (
+        <div style={{ margin: 15 }}>
             <p>{context.text}</p>
-            <input ref={myRef} name="" placeholder='email'></input>
-            <ButtonUI label={'Click'}/>
+            <input ref={myRef} name="email" placeholder="Enter email" />
+            <ButtonUI onClick={handleSubmit} label="Submit" />
         </div>
-    )
-}
+    );
+};

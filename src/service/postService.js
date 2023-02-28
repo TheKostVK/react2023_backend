@@ -1,8 +1,8 @@
-export const getCurrentpostsToUser = (userId, posts) => {
+export const getCurrentPostsToUser = (userId, posts) => {
     let currentPosts = [];
 
     posts.find((post) => {
-        if (userId == post.userId) {
+        if (userId === post.userId) {
             currentPosts.push(post);
         }
     });
