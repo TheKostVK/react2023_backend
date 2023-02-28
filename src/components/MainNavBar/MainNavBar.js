@@ -15,9 +15,6 @@ export const MainNavBar = (props) => {
                         <li className="nav-item">
                             <Link to="/hello" className="nav-link">Hello</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link to="/hello/25" state={state} className="nav-link">Hello ID</Link>
-                        </li>
                     </ul>
                 </nav>
                 <hr/>
