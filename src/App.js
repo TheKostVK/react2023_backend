@@ -12,7 +12,7 @@ function App() {
         <MainNavBar>
             <Routes>
                 <Route path='/' element={<HomePage />} />
-                <Route path='/hello/:id' element={<HelloWorld />} />
+                <Route path='/hello' element={<HelloWorld />} />
                 <Route path='*' element={<NotFoundError />} />
             </Routes>
             <div></div>
