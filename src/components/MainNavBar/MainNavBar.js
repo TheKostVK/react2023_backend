@@ -27,7 +27,7 @@ export const MainNavBar = (props) => {
 
     return (
         <>
-            <nav>
+            <nav style={{zIndex: 999999}}>
                 {(toggleMenu || screenWidth > 500) && (
                     <ul className="list">
                         <li>

@@ -4,16 +4,16 @@ import {HelloWorld, MainNavBar} from './components/';
 import {Card} from 'antd';
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Route, Routes} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 
 
 function App() {
     return (
         <MainNavBar>
             <Routes>
-                <Route path='/' element={<HomePage />} />
-                <Route path='/hello' element={<HelloWorld />} />
-                <Route path='*' element={<NotFoundError />} />
+                <Route path='/' element={<HomePage/>}/>
+                <Route path='/hello' element={<HelloWorld/>}/>
+                <Route path='*' element={<NotFoundError/>}/>
             </Routes>
             <div></div>
         </MainNavBar>
@@ -60,7 +60,7 @@ const HomePage = () => {
             // Обновляем надпись на кнопке
             setUsersButtonLabel('Обновить список пользователей');
         } catch (error) {
-            console.error('Ошибка получения списка пользователей: ',error);
+            console.error('Ошибка получения списка пользователей: ', error);
         }
     };
 
@@ -71,7 +71,7 @@ const HomePage = () => {
     };
 
 
-    return(
+    return (
         <div>
             <h1 style={{margin: 15}}>Список пользователей:</h1>
             <button style={{margin: 15}} className="button-main" type="button" onClick={handleGetUsers}>
@@ -87,7 +87,8 @@ const HomePage = () => {
                 {users.map((user) => {
                     const userPostList = userPosts.filter((post) => post.userId === user.id);
                     return (
-                        <Card style={{margin: 15}} title={user.name} key={user.id}>
+                        <Card style={{margin: 15}} headStyle={{background: 'dimgrey', color: '#fff'}} title={user.name}
+                              key={user.id}>
                             <p>
                                 <strong>Email: </strong>
                                 <strong style={{color: 'red'}}>{user.email}</strong>
@@ -110,7 +111,7 @@ const HomePage = () => {
                                             <Card
                                                 title={post.title}
                                                 style={{margin: 10}}
-                                                headStyle={{background: 'black', color: '#fff'}}
+                                                headStyle={{background: 'dimgrey', color: '#fff'}}
                                                 key={post.id}
                                             >
                                                 <p>{post.body}</p>
@@ -135,9 +136,13 @@ const NotFoundError = () => {
     const error = new Error(message);
     error.statusCode = 404;
     return (
-        <div>
+        <div style={{margin: 15}}>
             <h1>404 Page not found</h1>
             <p>Запрошенная страница не существует.</p>
+            <Link className="button-main" to="/">Вернуться на главную</Link>
+            <Routes>
+                <Route path='/' element={<HomePage/>}/>
+            </Routes>
         </div>
     );
 };
