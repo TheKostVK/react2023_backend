@@ -50,7 +50,7 @@ router.post('/post/add', async (req, res, next) => {
             title: 'Hello World',
             short_desc: "Short description",
             full_desc: "Full description",
-            create_date: new Date
+            create_date: new Date()
         });
         await post.save();
         // Формируем ответ для клиента
