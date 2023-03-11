@@ -1,5 +1,5 @@
 import express from "express";
-import Post from "../db/schemas/postSchema.js";
+import PostSchema from "../db/schemas/postSchema.js";
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/posts', async (req, res, next) => {
     try {
         // Получаем все посты из базы данных
-        const posts = await Post.find({});
+        const posts = await PostSchema.find({});
         // Формируем ответ для клиента
         const responseObj = {
             success: true,
@@ -27,7 +27,7 @@ router.get('/post/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
         // Находим пост по id в базе данных
-        const post = await Post.findOne({ '_id': id });
+        const post = await PostSchema.findOne({ '_id': id });
         // Формируем ответ для клиента
         const responseObj = {
             success: true,
@@ -46,7 +46,7 @@ router.get('/post/:id', async (req, res, next) => {
 router.post('/post/add', async (req, res, next) => {
     try {
         // Создаем новый пост в базе данных
-        const post = new Post({
+        const post = new PostSchema({
             title: 'Hello World',
             short_desc: "Short description",
             full_desc: "Full description",
@@ -72,7 +72,7 @@ router.put('/post/:id/update', async (req, res, next) => {
     const id = req.params.id;
     try {
         // Находим пост по id в базе данных
-        const post = await Post.findOne({ '_id': id });
+        const post = await PostSchema.findOne({ '_id': id });
         // Обновляем данные поста
         post.short_desc = 'New Text';
         await post.save();
