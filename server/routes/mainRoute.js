@@ -1,26 +1,25 @@
-import express from "express"
+import express from "express";
 
-const router = express.Router()
+const router = express.Router();
 
-
-// get
-router.get('/', (req, res) => {
-    console.log(req.body)
+// GET request
+router.get("/", (req, res) => {
+    console.log("GET request received");
     const response = {
         ok: true,
-        errMsg: 'Get method'
-    }
-    res.status(200).json(response).send()
-})
+        errMsg: "GET method",
+    };
+    res.status(200).json(response);
+});
 
-// post
-router.post('/', (req, res) => {
-    console.log('Body: ', req.body)
+// POST request
+router.post("/", (req, res) => {
+    console.log("POST request received. Body: ", req.body);
     const response = {
         ok: true,
-        errMsg: ''
-    }
-    res.status(200).json(response).send()
-})
+        errMsg: "POST method",
+    };
+    res.status(200).json(response);
+});
 
-export default router
+export default router;

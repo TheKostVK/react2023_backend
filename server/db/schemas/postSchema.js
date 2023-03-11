@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 
-const Post = new mongoose.Schema({
-    title: {type: String, default: 'DEFAULT TITLE'},
-    short_desc: {type: String},
-    full_desc: {type: String},
-    create_date: {type: Date}
-})
+const PostSchema = new mongoose.Schema({
+    title: { type: String, default: "DEFAULT TITLE" },
+    short_desc: { type: String },
+    full_desc: { type: String },
+    create_date: { type: Date, default: Date.now },
+});
 
-const model = mongoose.model('Post', Post)
+const PostModel = mongoose.model("Post", PostSchema);
 
-export default model;
+export default PostModel;
