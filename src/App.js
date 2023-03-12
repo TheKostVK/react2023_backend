@@ -1,6 +1,6 @@
 import './App.css';
 import './mycss.css';
-import {HelloWorld, MainNavBar} from './components/';
+import {HelloWorld, MainNavBar, PostPage, Posts} from './components/';
 import {Card} from 'antd';
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,6 +12,8 @@ function App() {
         <MainNavBar>
             <Routes>
                 <Route path='/' element={<HomePage/>}/>
+                <Route path='/posts' element={<Posts/>}/>
+                <Route path='/post/:id' element={<PostPage/>}/>
                 <Route path='/hello' element={<HelloWorld/>}/>
                 <Route path='*' element={<NotFoundError/>}/>
             </Routes>
@@ -139,7 +141,7 @@ const NotFoundError = () => {
         <div style={{margin: 15}}>
             <h1>404 Page not found</h1>
             <p>Запрошенная страница не существует.</p>
-            <Link className="button-main" to="/">Вернуться на главную</Link>
+            <Link className="button-main" to="/" style={{textDecoration: 'none'}}>Вернуться на главную</Link>
             <Routes>
                 <Route path='/' element={<HomePage/>}/>
             </Routes>
