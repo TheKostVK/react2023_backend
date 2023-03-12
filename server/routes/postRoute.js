@@ -3,6 +3,7 @@ import PostSchema from "../db/schemas/postSchema.js";
 
 const router = express.Router();
 
+
 // Обработчик GET-запроса на получение всех постов
 router.get('/posts', async (req, res, next) => {
     try {
@@ -21,6 +22,7 @@ router.get('/posts', async (req, res, next) => {
         next(error);
     }
 });
+
 
 // Обработчик GET-запроса на получение конкретного поста по id
 router.get('/post/:id', async (req, res, next) => {
@@ -41,6 +43,7 @@ router.get('/post/:id', async (req, res, next) => {
         next(error);
     }
 });
+
 
 // Обработчик POST-запроса на добавление нового поста в базу данных
 router.post('/post/add', async (req, res, next) => {
@@ -67,6 +70,7 @@ router.post('/post/add', async (req, res, next) => {
     }
 });
 
+
 // Обработчик PUT-запроса на обновление поста по id в базе данных
 router.put('/post/:id/update', async (req, res, next) => {
     const id = req.params.id;
@@ -89,5 +93,6 @@ router.put('/post/:id/update', async (req, res, next) => {
         next(error);
     }
 });
+
 
 export default router;
