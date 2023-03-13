@@ -79,6 +79,7 @@ router.put('/post/:id/update', async (req, res, next) => {
         const post = await PostSchema.findOne({ '_id': id });
         // Обновляем данные поста
         post.short_desc = 'New Text';
+        post.full_desc = 'New Text full desc intel sintol kaffkoeak koeafk akofaekpo kopaef okpafkaf oaoaooa oaoooall';
         await post.save();
         // Формируем ответ для клиента
         const responseObj = {
@@ -89,6 +90,8 @@ router.put('/post/:id/update', async (req, res, next) => {
         // Отправляем ответ клиенту
         res.status(200).json(responseObj);
     } catch (error) {
+        // Выводим ошибку в консоль
+        console.log(error);
         // Обрабатываем возможную ошибку и передаем ее дальше
         next(error);
     }
