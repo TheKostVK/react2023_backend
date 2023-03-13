@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import moment from "moment";
-import {Card} from 'antd';
+import {Card, Skeleton} from 'antd';
 import {ButtonUI} from "../index";
 import {useNavigate} from "react-router-dom";
 
 export const Posts = () => {
     const navigation = useNavigate()
     const [posts, setPosts] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         getPosts();
@@ -19,6 +20,7 @@ export const Posts = () => {
 
             if (postsData.success && Array.isArray(postsData.posts) && postsData.posts.length > 0) {
                 setPosts(postsData.posts);
+                setLoading(false);
             }
         } catch (error) {
             console.error('Ошибка получения данных: ', error);
@@ -33,7 +35,17 @@ export const Posts = () => {
 
     return (
         <>
-            {posts && Array.isArray(posts) && (
+            {isLoading && (
+                <>
+                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
+                        <Skeleton active/>
+                    </Card>
+                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
+                        <Skeleton active/>
+                    </Card>
+                </>
+            )}
+            {!isLoading && posts && Array.isArray(posts) && (
                 <>
                     {posts.map((item) => {
                         return (
