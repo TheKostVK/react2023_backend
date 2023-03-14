@@ -1,7 +1,7 @@
+import {Button} from 'antd';
 
-
-export const ButtonUI = ({label}) => {
+export const ButtonUI = ({label, onClick}) => {
     return(
-        <button type="">{label}</button>
+        <Button type="primary" size='small' onClick={onClick}>{label}</Button>
     )
 }

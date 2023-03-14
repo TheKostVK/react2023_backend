@@ -1,10 +1,9 @@
 import './App.css';
 import './mycss.css';
-import {HelloWorld, MainNavBar} from './components/';
-import {Card} from 'antd';
+import {MainNavBar, PostPage, Posts} from './components/';
+import {Card, Skeleton} from 'antd';
 import React, {useState} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Link, Route, Routes} from "react-router-dom";
+import {Link, Route, Routes, useLocation} from "react-router-dom";
 
 
 function App() {
@@ -12,10 +11,10 @@ function App() {
         <MainNavBar>
             <Routes>
                 <Route path='/' element={<HomePage/>}/>
-                <Route path='/hello' element={<HelloWorld/>}/>
+                <Route path='/posts' element={<Posts/>}/>
+                <Route path='/post/:id' element={<PostPage/>}/>
                 <Route path='*' element={<NotFoundError/>}/>
             </Routes>
-            <div></div>
         </MainNavBar>
     );
 }
@@ -26,6 +25,7 @@ const HomePage = () => {
     const [users, setUsers] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
     const [usersButtonLabel, setUsersButtonLabel] = useState('Получить список пользователей');
+    const [isLoading, setLoading] = useState(false);
 
 
     // Функция для получения постов пользователей и списка пользователей
@@ -49,17 +49,20 @@ const HomePage = () => {
         } catch (error) {
             console.error('Ошибка получения данных: ', error);
         }
+        setLoading(false)
     };
 
 
     // Функция, которая вызывается при нажатии на кнопку "Получить список пользователей"
     const handleGetUsers = async () => {
         try {
+            setLoading(true);
+            setUsersButtonLabel('Обновить список пользователей');
             // Получаем список пользователей и их постов
             await getUsersAndPosts();
             // Обновляем надпись на кнопке
-            setUsersButtonLabel('Обновить список пользователей');
         } catch (error) {
+            setUsersButtonLabel('Попытаться получить список пользователей еще раз');
             console.error('Ошибка получения списка пользователей: ', error);
         }
     };
@@ -83,46 +86,61 @@ const HomePage = () => {
                     className="subsection-performance-headline">{formatDate(new Date())}</strong>
                 </p>
             )}
+            {isLoading && (
+                <>
+                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
+                        <Skeleton active/>
+                    </Card>
+                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
+                        <Skeleton active/>
+                    </Card>
+                </>
+            )}
             <div>
                 {users.map((user) => {
                     const userPostList = userPosts.filter((post) => post.userId === user.id);
                     return (
-                        <Card style={{margin: 15}} headStyle={{background: 'dimgrey', color: '#fff'}} title={user.name}
-                              key={user.id}>
-                            <p>
-                                <strong>Email: </strong>
-                                <strong style={{color: 'red'}}>{user.email}</strong>
-                            </p>
-                            <p>
-                                <strong>Номер телефона: </strong>
-                                <strong style={{color: '#6A5ACD'}}>{user.phone}</strong>
-                            </p>
-                            <p>
-                                <strong>Веб-сайт: </strong>
-                                <a href={user.website}>{user.website}</a>
-                            </p>
-                            <div style={{border: '1px solid #000', borderRadius: 2}}>
-                                <details>
-                                    <summary style={{fontWeight: 'bold', marginBottom: 10}}>
-                                        Посты пользователя
-                                    </summary>
-                                    {userPostList.length > 0 ? (
-                                        userPostList.map((post) => (
-                                            <Card
-                                                title={post.title}
-                                                style={{margin: 10}}
-                                                headStyle={{background: 'dimgrey', color: '#fff'}}
-                                                key={post.id}
-                                            >
-                                                <p>{post.body}</p>
-                                            </Card>
-                                        ))
-                                    ) : (
-                                        <p style={{margin: 10}}>Постов нет</p>
-                                    )}
-                                </details>
-                            </div>
-                        </Card>
+                        <>
+                            {!isLoading && (
+                                <Card style={{margin: 20}} headStyle={{background: 'dimgrey', color: '#fff'}}
+                                      title={user.name}
+                                      key={user.id}>
+                                    <p>
+                                        <strong>Email: </strong>
+                                        <strong style={{color: 'red'}}>{user.email}</strong>
+                                    </p>
+                                    <p>
+                                        <strong>Номер телефона: </strong>
+                                        <strong style={{color: '#6A5ACD'}}>{user.phone}</strong>
+                                    </p>
+                                    <p>
+                                        <strong>Веб-сайт: </strong>
+                                        <a href={user.website}>{user.website}</a>
+                                    </p>
+                                    <div style={{border: '1px solid #000', borderRadius: 2}}>
+                                        <details>
+                                            <summary style={{fontWeight: 'bold', marginBottom: 10}}>
+                                                Посты пользователя
+                                            </summary>
+                                            {userPostList.length > 0 ? (
+                                                userPostList.map((post) => (
+                                                    <Card
+                                                        title={post.title}
+                                                        style={{margin: 10}}
+                                                        headStyle={{background: 'dimgrey', color: '#fff'}}
+                                                        key={post.id}
+                                                    >
+                                                        <p>{post.body}</p>
+                                                    </Card>
+                                                ))
+                                            ) : (
+                                                <p style={{margin: 10}}>Постов нет</p>
+                                            )}
+                                        </details>
+                                    </div>
+                                </Card>
+                            )}
+                        </>
                     );
                 })}
             </div>
@@ -132,17 +150,15 @@ const HomePage = () => {
 
 
 const NotFoundError = () => {
-    const message = `Запрошенная страница не существует.`;
+    const {pathname} = useLocation();
+    const message = `Запрошенная страница не существует ошибка при получении информации с URL: ${pathname}`;
     const error = new Error(message);
     error.statusCode = 404;
     return (
         <div style={{margin: 15}}>
             <h1>404 Page not found</h1>
-            <p>Запрошенная страница не существует.</p>
-            <Link className="button-main" to="/">Вернуться на главную</Link>
-            <Routes>
-                <Route path='/' element={<HomePage/>}/>
-            </Routes>
+            <p>{message}</p>
+            <Link className="button-main" to="/" style={{textDecoration: 'none'}}>Вернуться на главную</Link>
         </div>
     );
 };

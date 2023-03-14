@@ -3,6 +3,7 @@ import PostSchema from "../db/schemas/postSchema.js";
 
 const router = express.Router();
 
+
 // Обработчик GET-запроса на получение всех постов
 router.get('/posts', async (req, res, next) => {
     try {
@@ -21,6 +22,7 @@ router.get('/posts', async (req, res, next) => {
         next(error);
     }
 });
+
 
 // Обработчик GET-запроса на получение конкретного поста по id
 router.get('/post/:id', async (req, res, next) => {
@@ -41,6 +43,7 @@ router.get('/post/:id', async (req, res, next) => {
         next(error);
     }
 });
+
 
 // Обработчик POST-запроса на добавление нового поста в базу данных
 router.post('/post/add', async (req, res, next) => {
@@ -67,6 +70,7 @@ router.post('/post/add', async (req, res, next) => {
     }
 });
 
+
 // Обработчик PUT-запроса на обновление поста по id в базе данных
 router.put('/post/:id/update', async (req, res, next) => {
     const id = req.params.id;
@@ -75,6 +79,7 @@ router.put('/post/:id/update', async (req, res, next) => {
         const post = await PostSchema.findOne({ '_id': id });
         // Обновляем данные поста
         post.short_desc = 'New Text';
+        post.full_desc = 'New Text full desc intel sintol kaffkoeak koeafk akofaekpo kopaef okpafkaf oaoaooa oaoooall';
         await post.save();
         // Формируем ответ для клиента
         const responseObj = {
@@ -85,9 +90,12 @@ router.put('/post/:id/update', async (req, res, next) => {
         // Отправляем ответ клиенту
         res.status(200).json(responseObj);
     } catch (error) {
+        // Выводим ошибку в консоль
+        console.log(error);
         // Обрабатываем возможную ошибку и передаем ее дальше
         next(error);
     }
 });
+
 
 export default router;
