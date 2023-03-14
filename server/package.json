@@ -15,6 +15,9 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongoose": "^7.0.1",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.21",
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2"
   }
 }

@@ -82,16 +82,16 @@ const HomePage = () => {
             </button>
             {usersButtonLabel !== 'Получить список пользователей' && (
                 <p style={{margin: 15}}>
-                    Дата последнего обновления: <strong
-                    className="subsection-performance-headline">{formatDate(new Date())}</strong>
+                    Дата последнего обновления:
+                    <strong className="subsection-performance-headline">{formatDate(new Date())}</strong>
                 </p>
             )}
             {isLoading && (
                 <>
-                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
+                    <Card key='1' title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
                         <Skeleton active/>
                     </Card>
-                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
+                    <Card key='2' title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
                         <Skeleton active/>
                     </Card>
                 </>
