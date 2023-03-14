@@ -1,7 +1,7 @@
 import React from "react";
 import {Link, useLocation} from 'react-router-dom';
 import './MainNavBar.css'
-import {Breadcrumb, Layout, Menu, theme} from 'antd';
+import {Breadcrumb, Layout, Menu} from 'antd';
 
 const {Header, Content, Footer} = Layout;
 

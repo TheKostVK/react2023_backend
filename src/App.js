@@ -1,10 +1,9 @@
 import './App.css';
 import './mycss.css';
-import {HelloWorld, MainNavBar, PostPage, Posts} from './components/';
+import {MainNavBar, PostPage, Posts} from './components/';
 import {Card, Skeleton} from 'antd';
 import React, {useState} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Link, Route, Routes} from "react-router-dom";
+import {Link, Route, Routes, useLocation} from "react-router-dom";
 
 
 function App() {
@@ -14,10 +13,8 @@ function App() {
                 <Route path='/' element={<HomePage/>}/>
                 <Route path='/posts' element={<Posts/>}/>
                 <Route path='/post/:id' element={<PostPage/>}/>
-                <Route path='/hello' element={<HelloWorld/>}/>
                 <Route path='*' element={<NotFoundError/>}/>
             </Routes>
-            <div></div>
         </MainNavBar>
     );
 }
@@ -153,17 +150,15 @@ const HomePage = () => {
 
 
 const NotFoundError = () => {
-    const message = `Запрошенная страница не существует.`;
+    const {pathname} = useLocation();
+    const message = `Запрошенная страница не существует ошибка при получении информации с URL: ${pathname}`;
     const error = new Error(message);
     error.statusCode = 404;
     return (
         <div style={{margin: 15}}>
             <h1>404 Page not found</h1>
-            <p>Запрошенная страница не существует.</p>
+            <p>{message}</p>
             <Link className="button-main" to="/" style={{textDecoration: 'none'}}>Вернуться на главную</Link>
-            <Routes>
-                <Route path='/' element={<HomePage/>}/>
-            </Routes>
         </div>
     );
 };
