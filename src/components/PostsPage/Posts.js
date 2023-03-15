@@ -9,7 +9,7 @@ import {getPosts} from "../../store/actions/postActions";
 export const Posts = () => {
     const navigation = useNavigate()
     const dispatch = useDispatch();
-    const {loading, success, posts} = useSelector((state => state.posts));
+    const {loading, posts} = useSelector((state => state.posts));
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,6 +23,7 @@ export const Posts = () => {
         };
         fetchData();
     }, [dispatch]);
+
 
     const goToPost = (id) => {
         navigation(`/post/${id}`)

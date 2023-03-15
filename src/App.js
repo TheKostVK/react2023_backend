@@ -1,11 +1,12 @@
 import './App.css';
 import './mycss.css';
 import {MainNavBar, PostPage, Posts} from './components/';
-import {Card, Skeleton} from 'antd';
+import {Card, Skeleton, Button} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {Link, Route, Routes, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "./store/actions/usersActions";
+import {getUserPosts} from "./store/actions/userPostsActions";
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
 const HomePage = () => {
     const [userPosts, setUserPosts] = useState([]);
     const dispatch = useDispatch();
-    const {loading, success, users} = useSelector((state => state.users));
+    const {loading, users} = useSelector((state) => state.users);
 
 
     useEffect(() => {
@@ -87,7 +88,26 @@ const HomePage = () => {
                                                 <strong>Веб-сайт: </strong>
                                                 <a href={user.website}>{user.website}</a>
                                             </p>
-                                            <div style={{border: '1px solid #000', borderRadius: 2}}>
+                                            <Button type="primary" onClick={() => {
+                                                const fetchData = async () => {
+                                                    try {
+                                                        dispatch({type: 'getUserPosts_onfetch'});
+                                                        const data = await getUserPosts(user.id);
+                                                        setUserPosts(data);
+                                                        dispatch({
+                                                            type: 'getUserPosts_success',
+                                                            loading: false,
+                                                            success: true
+                                                        });
+                                                    } catch (error) {
+                                                        dispatch({type: 'getUserPosts_failure', errMsg: error.message});
+                                                    }
+                                                };
+                                                fetchData();
+                                            }}>
+                                                Загрузить посты
+                                            </Button>
+                                            <div style={{border: '1px solid #000', borderRadius: 2, marginTop: 15}}>
                                                 <details>
                                                     <summary style={{fontWeight: 'bold', marginBottom: 10}}>
                                                         Посты пользователя
@@ -129,8 +149,7 @@ const HomePage = () => {
                             </>
                         )}
                     </>
-                )
-                }
+                )}
             </div>
         </div>
     )
