@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Typography, Divider, Skeleton, Empty} from "antd";
 import moment from "moment";
+import {ButtonUI} from "../UI/ButtonUI/ButtonUI";
 
 const {Title} = Typography;
 
@@ -38,7 +39,8 @@ export const PostPage = () => {
                         <>
                             <Empty style={{margin: 20}}/>
                             <div style={{color: "red"}}>{`Пост не найден`}</div>
-                            <Link className="button-main" to="/posts" style={{textDecoration: 'none'}}>Вернуться к постам</Link>
+                            <ButtonUI className={"ant-btn-primary ant-btn"} to={"/posts"} style={{textDecoration: 'none'}}
+                                      label={"Вернуться к постам"}/>
                         </>
                     ) : (
                         <>

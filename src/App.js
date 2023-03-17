@@ -1,9 +1,9 @@
 import './App.css';
 import './mycss.css';
-import {MainNavBar, PostPage, Posts} from './components/';
-import {Card, Skeleton, Button} from 'antd';
+import {ButtonUI, MainNavBar, PostPage, Posts} from './components/';
+import {Card, Skeleton} from 'antd';
 import React, {useEffect, useState} from 'react';
-import {Link, Route, Routes, useLocation} from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "./store/actions/usersActions";
 import {getUserPosts} from "./store/actions/userPostsActions";
@@ -88,7 +88,8 @@ const HomePage = () => {
                                                 <strong>Веб-сайт: </strong>
                                                 <a href={user.website}>{user.website}</a>
                                             </p>
-                                            <Button type="primary" onClick={() => {
+                                            <ButtonUI type="primary" label={"Загрузить посты"} className={"ant-btn-primary ant-btn"}
+                                                      style={{textDecoration: 'none'}} onClick={() => {
                                                 const fetchData = async () => {
                                                     try {
                                                         dispatch({type: 'getUserPosts_onfetch'});
@@ -106,7 +107,7 @@ const HomePage = () => {
                                                 fetchData();
                                             }}>
                                                 Загрузить посты
-                                            </Button>
+                                            </ButtonUI>
                                             <div style={{border: '1px solid #000', borderRadius: 2, marginTop: 15}}>
                                                 <details>
                                                     <summary style={{fontWeight: 'bold', marginBottom: 10}}>
@@ -165,7 +166,8 @@ const NotFoundError = () => {
         <div style={{margin: 15}}>
             <h1>404 Page not found</h1>
             <p>{message}</p>
-            <Link className="button-main" to="/" style={{textDecoration: 'none'}}>Вернуться на главную</Link>
+            <ButtonUI type={"button"} className={"ant-btn-primary ant-btn"} to={"/"} style={{textDecoration: 'none'}}
+                      label={"Вернуться на главную"}/>
         </div>
     );
 };
