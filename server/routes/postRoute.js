@@ -53,7 +53,10 @@ router.post('/post/add', async (req, res, next) => {
             title: 'Hello World',
             short_desc: "Short description",
             full_desc: "Full description",
-            create_date: new Date()
+            create_date: new Date(),
+            userCreate: "",
+            lastUpdate_date: "",
+            userUpdate: "",
         });
         await post.save();
         // Формируем ответ для клиента
@@ -72,14 +75,20 @@ router.post('/post/add', async (req, res, next) => {
 
 
 // Обработчик PUT-запроса на обновление поста по id в базе данных
-router.put('/post/:id/update', async (req, res, next) => {
+router.post('/post/:id/update', async (req, res, next) => {
     const id = req.params.id;
+    const { title, short_desc, full_desc, create_date, userCreate, userUpdate } = req.body;
     try {
         // Находим пост по id в базе данных
         const post = await PostSchema.findOne({ '_id': id });
         // Обновляем данные поста
-        post.short_desc = 'New Text';
-        post.full_desc = 'New Text full desc intel sintol kaffkoeak koeafk akofaekpo kopaef okpafkaf oaoaooa oaoooall';
+        post.title = title;
+        post.short_desc = short_desc;
+        post.full_desc = full_desc;
+        post.create_date = create_date;
+        post.userCreate = userCreate;
+        post.lastUpdate_date = new Date();
+        post.userUpdate = userUpdate;
         await post.save();
         // Формируем ответ для клиента
         const responseObj = {
@@ -96,6 +105,7 @@ router.put('/post/:id/update', async (req, res, next) => {
         next(error);
     }
 });
+
 
 
 export default router;

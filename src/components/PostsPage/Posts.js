@@ -1,10 +1,12 @@
 import React, {useEffect} from "react";
 import moment from "moment";
-import {Card, Skeleton} from 'antd';
+import {Card, Skeleton, Typography} from 'antd';
 import {ButtonUI} from "../index";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getPosts} from "../../store/actions/postActions";
+
+const {Title} = Typography;
 
 export const Posts = () => {
     const navigation = useNavigate()
@@ -44,11 +46,13 @@ export const Posts = () => {
                 <>
                     {posts && posts.length > 0 ? (
                         <>
+                            <Title level={1} style={{textAlign: "center"}}>Посты</Title>
                             {posts.map((item) => (
-                                <Card key={item._id} title={item.title} bordered={false} style={{margin: 20}}>
+                                <Card key={item._id} title={item.title} bordered={false}
+                                      style={{marginLeft: 20, marginRight: 20, marginBottom: 20}}>
                                     <p>{item.short_desc}</p>
-                                    <p>{moment(item.create_date).format('DD.MM.YY HH:m:ss')}</p>
-                                    <ButtonUI type={"primary"} label={'Открыть'} className={"ant-btn-primary ant-btn"}
+                                    <p>{moment(item.create_date).format('DD.MM.YYYY HH:m:s')}</p>
+                                    <ButtonUI type={"primary"} label={'Читать'} className={"ant-btn-primary ant-btn"}
                                               style={{textDecoration: 'none'}} onClick={() => goToPost(item._id)}/>
                                 </Card>
                             ))}

@@ -1,9 +1,10 @@
 import React from "react";
 import {Link, useLocation} from 'react-router-dom';
 import './MainNavBar.css'
-import {Breadcrumb, Layout, Menu} from 'antd';
+import {Breadcrumb, Col, Layout, Menu, Row, Typography} from 'antd';
 
 const {Header, Content, Footer} = Layout;
+const {Text} = Typography;
 
 
 export const MainNavBar = (props) => {
@@ -16,7 +17,7 @@ export const MainNavBar = (props) => {
                       className="main-menu">
                     <Menu.Item key="logo">
                         <Link to="/" className="items" style={{filter: 'blur(5px)', backgroundColor: 'darkgrey'}}>
-                            ГЛАВНАЯ СТРАНИЦА
+                            ГЛАВНАЯ
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="/">
@@ -48,7 +49,10 @@ export const MainNavBar = (props) => {
             </Header>
             <Content style={{padding: '0 15px 50px', marginTop: 70}}>
                 <Breadcrumb style={{margin: '16px 0'}}>
-                    <Breadcrumb.Item>Путь: {pathname}</Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        <Text type="secondary">Путь: </Text>
+                        {pathname}
+                    </Breadcrumb.Item>
                 </Breadcrumb>
                 <Content>
                     <div className="site-layout-content"
@@ -58,7 +62,14 @@ export const MainNavBar = (props) => {
                 </Content>
             </Content>
             <Footer style={{textAlign: 'center', width: '100%'}}>
-                TheKost_
+                <Row size="small">
+                    <Col span={12} style={{textAlign: "left"}}>
+                        React project 2023
+                    </Col>
+                    <Col span={12} style={{textAlign: "right"}}>
+                        TheKost_
+                    </Col>
+                </Row>
             </Footer>
         </Layout>
     );

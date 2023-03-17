@@ -6,6 +6,9 @@ const PostSchema = new mongoose.Schema({
     short_desc: { type: String },
     full_desc: { type: String },
     create_date: { type: Date, default: Date.now },
+    userCreate: { type: String },
+    lastUpdate_date: { type: Date, default: "" },
+    userUpdate: { type: String },
 });
 
 const PostModel = mongoose.model("Post", PostSchema);

@@ -1,7 +1,7 @@
 import './App.css';
 import './mycss.css';
 import {ButtonUI, MainNavBar, PostPage, Posts} from './components/';
-import {Card, Skeleton} from 'antd';
+import {Card, Skeleton, Result} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {Route, Routes, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -163,12 +163,15 @@ const NotFoundError = () => {
     const error = new Error(message);
     error.statusCode = 404;
     return (
-        <div style={{margin: 15}}>
-            <h1>404 Page not found</h1>
-            <p>{message}</p>
-            <ButtonUI type={"primary"} className={"ant-btn-primary ant-btn"} to={"/"} style={{textDecoration: 'none'}}
-                      label={"Вернуться на главную"}/>
-        </div>
+    <Result
+        status="404"
+        title="404"
+        subTitle={message}
+        extra={
+        <ButtonUI type={"primary"} className={"ant-btn-primary ant-btn"} to={"/"} style={{textDecoration: 'none'}}
+                         label={"Вернуться на главную"}/>
+        }
+    />
     );
 };
 
