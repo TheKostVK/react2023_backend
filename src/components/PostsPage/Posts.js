@@ -48,7 +48,8 @@ export const Posts = () => {
                                 <Card key={item._id} title={item.title} bordered={false} style={{margin: 20}}>
                                     <p>{item.short_desc}</p>
                                     <p>{moment(item.create_date).format('DD.MM.YY HH:m:ss')}</p>
-                                    <ButtonUI label={'Открыть'} onClick={() => goToPost(item._id)}/>
+                                    <ButtonUI type={"primary"} label={'Открыть'} className={"ant-btn-primary ant-btn"}
+                                              style={{textDecoration: 'none'}} onClick={() => goToPost(item._id)}/>
                                 </Card>
                             ))}
                         </>

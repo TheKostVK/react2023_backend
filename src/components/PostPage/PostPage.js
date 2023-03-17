@@ -39,8 +39,8 @@ export const PostPage = () => {
                         <>
                             <Empty style={{margin: 20}}/>
                             <div style={{color: "red"}}>{`Пост не найден`}</div>
-                            <ButtonUI className={"ant-btn-primary ant-btn"} to={"/posts"} style={{textDecoration: 'none'}}
-                                      label={"Вернуться к постам"}/>
+                            <ButtonUI type={"primary"} className={"ant-btn-primary ant-btn"} to={"/posts"}
+                                      style={{textDecoration: 'none', marginTop: 15}} label={"Вернуться к постам"}/>
                         </>
                     ) : (
                         <>

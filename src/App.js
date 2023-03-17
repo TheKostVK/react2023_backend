@@ -88,7 +88,7 @@ const HomePage = () => {
                                                 <strong>Веб-сайт: </strong>
                                                 <a href={user.website}>{user.website}</a>
                                             </p>
-                                            <ButtonUI type="primary" label={"Загрузить посты"} className={"ant-btn-primary ant-btn"}
+                                            <ButtonUI type={"primary"} label={"Загрузить посты"} className={"ant-btn-primary ant-btn"}
                                                       style={{textDecoration: 'none'}} onClick={() => {
                                                 const fetchData = async () => {
                                                     try {
@@ -166,7 +166,7 @@ const NotFoundError = () => {
         <div style={{margin: 15}}>
             <h1>404 Page not found</h1>
             <p>{message}</p>
-            <ButtonUI type={"button"} className={"ant-btn-primary ant-btn"} to={"/"} style={{textDecoration: 'none'}}
+            <ButtonUI type={"primary"} className={"ant-btn-primary ant-btn"} to={"/"} style={{textDecoration: 'none'}}
                       label={"Вернуться на главную"}/>
         </div>
     );
