@@ -57,7 +57,7 @@ export const MainNavBar = (props) => {
                     </div>
                 </Content>
             </Content>
-            <Footer style={{textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: '100%'}}>
+            <Footer style={{textAlign: 'center', width: '100%'}}>
                 TheKost_
             </Footer>
         </Layout>

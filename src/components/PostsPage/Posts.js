@@ -47,7 +47,6 @@ export const Posts = () => {
                             {posts.map((item) => (
                                 <Card key={item._id} title={item.title} bordered={false} style={{margin: 20}}>
                                     <p>{item.short_desc}</p>
-                                    <p>{item.full_desc}</p>
                                     <p>{moment(item.create_date).format('DD.MM.YY HH:m:ss')}</p>
                                     <ButtonUI label={'Открыть'} onClick={() => goToPost(item._id)}/>
                                 </Card>
