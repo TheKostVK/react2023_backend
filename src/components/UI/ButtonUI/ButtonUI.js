@@ -1,15 +1,21 @@
 import { Button } from "antd";
+import {Link} from "react-router-dom";
 
-export const ButtonUI = ({ label, onClick, link, styles }) => {
-    const buttonStyles = { ...styles };
-    return link ? (
-        <a href={link}>
-            <Button style={buttonStyles} type="primary" size="small">
+export const ButtonUI = ({ to, label, urlTo , styles, size = 'small', type = 'primary', onClick }) => {
+    return to ? (
+        <Link to={to}>
+            <Button type={type} size={size} style={styles} onClick={onClick}>
+                {label}
+            </Button>
+        </Link>
+    ) : urlTo ? (
+        <a href={urlTo}>
+            <Button type={type} size={size} style={styles} onClick={onClick}>
                 {label}
             </Button>
         </a>
     ) : (
-        <Button style={buttonStyles} type="primary" size="small" onClick={onClick}>
+        <Button type={type} size={size} style={styles} onClick={onClick}>
             {label}
         </Button>
     );
