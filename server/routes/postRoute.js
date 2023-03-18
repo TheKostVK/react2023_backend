@@ -53,6 +53,7 @@ router.post('/post/add', async (req, res, next) => {
             title: 'Hello World',
             short_desc: "Short description",
             full_desc: "Full description",
+            teg_desc: '',
             create_date: new Date(),
             userCreate: "",
             lastUpdate_date: "",
@@ -77,7 +78,7 @@ router.post('/post/add', async (req, res, next) => {
 // Обработчик PUT-запроса на обновление поста по id в базе данных
 router.post('/post/:id/update', async (req, res, next) => {
     const id = req.params.id;
-    const { title, short_desc, full_desc, create_date, userCreate, userUpdate } = req.body;
+    const { title, short_desc, full_desc, teg_desc, url_mainImg , create_date, userCreate, userUpdate } = req.body;
     try {
         // Находим пост по id в базе данных
         const post = await PostSchema.findOne({ '_id': id });
@@ -85,6 +86,8 @@ router.post('/post/:id/update', async (req, res, next) => {
         post.title = title;
         post.short_desc = short_desc;
         post.full_desc = full_desc;
+        post.teg_desc = teg_desc;
+        post.url_mainImg = url_mainImg;
         post.create_date = create_date;
         post.userCreate = userCreate;
         post.lastUpdate_date = new Date();

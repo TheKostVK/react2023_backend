@@ -1,11 +1,12 @@
 import './App.css';
 import './mycss.css';
 import {ButtonUI, MainNavBar, PostPage, Posts} from './components/';
-import {Result, List, Avatar, Space} from 'antd';
+import {Result, List, Avatar, Skeleton, Divider} from 'antd';
+import {useState, useEffect} from "react";
 import React from 'react';
 import {Route, Routes, useLocation} from "react-router-dom";
-import {LikeOutlined, MessageOutlined, StarOutlined} from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 function App() {
@@ -22,68 +23,74 @@ function App() {
 }
 
 
-const data = Array.from({
-    length: 23,
-}).map((_, i) => ({
-    href: 'https://ant.design',
-    title: `ant design part ${i}`,
-    avatar: `https://joesch.moe/api/v1/random?key=${i}`,
-    description:
-        'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-}));
+function HomePage() {
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
 
-const IconText = ({icon, text}) => (
-    <Space>
-        {React.createElement(icon)}
-        {text}
-    </Space>
-);
+    const loadMoreData = () => {
+        if (loading) {
+            return;
+        }
+        setLoading(true);
+        fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
+            .then((res) => res.json())
+            .then((body) => {
+                setData([...data, ...body.results]);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
+    };
+
+    useEffect(() => {
+        loadMoreData();
+    }, []);
 
 
-const HomePage = () => (
-    <>
-        <Title level={1} style={{textAlign: "center"}}>Главная</Title>
-        <List style={{margin: 20}}
-              itemLayout="vertical"
-              size="large"
-              pagination={{
-                  onChange: (page) => {
-                      console.log(page);
-                  },
-                  pageSize: 3,
-              }}
-
-              dataSource={data}
-
-              renderItem={(item) => (
-                  <List.Item
-                      style={{margin: 10, border: 'solid', backgroundColor: 'white'}}
-                      key={item.title}
-                      actions={[
-                          <IconText icon={StarOutlined} text="156" key="list-vertical-star-o"/>,
-                          <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o"/>,
-                          <IconText icon={MessageOutlined} text="2" key="list-vertical-message"/>,
-                      ]}
-                      extra={
-                          <img
-                              width={272}
-                              alt="logo"
-                              src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                          />
-                      }>
-                      <List.Item.Meta
-                          avatar={<Avatar src={item.avatar}/>}
-                          title={<a href={item.href}>{item.title}</a>}
-                          description={item.description}
-                      />
-                      {item.content}
-                  </List.Item>
-              )}
-        />
-    </>
-);
+    return (
+        <>
+            <Title level={1} style={{textAlign: "center"}}>Главная</Title>
+            <div>здесь был текст</div>
+            <p>
+                Тут будут показаны последние комментарии и посты, а так же пользователи которые зарегистрировались
+                недавно))
+            </p>
+            <div
+                id="scrollableDiv"
+                style={{
+                    height: 400,
+                    overflow: 'auto',
+                    padding: '0 16px',
+                    border: '1px solid rgba(140, 140, 140, 0.35)',
+                }}
+            >
+                <InfiniteScroll
+                    dataLength={data.length}
+                    next={loadMoreData}
+                    hasMore={data.length < 50}
+                    loader={<Skeleton avatar paragraph={{rows: 1}} active/>}
+                    endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                    scrollableTarget="scrollableDiv"
+                >
+                    <List
+                        dataSource={data}
+                        renderItem={(item) => (
+                            <List.Item key={item.email}>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item.picture.large}/>}
+                                    title={<a href="https://ant.design">{item.name.last}</a>}
+                                    description={item.email}
+                                />
+                                <div>Content</div>
+                            </List.Item>
+                        )}
+                    />
+                </InfiniteScroll>
+            </div>
+        </>
+    );
+};
 
 
 const NotFoundError = () => {

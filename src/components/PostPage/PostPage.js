@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Typography, Divider, Skeleton, Modal, Row, Col, Result, Form, Input} from "antd";
+import {Typography, Divider, Skeleton, Modal, Row, Col, Result, Form, Input, Image} from "antd";
 import {ExclamationCircleFilled} from '@ant-design/icons';
 import moment from "moment";
 import {ButtonUI} from "../UI/ButtonUI/ButtonUI";
@@ -90,6 +90,8 @@ export const PostPage = () => {
             title: post.title || '',
             short_desc: post.short_desc || '',
             full_desc: post.full_desc || '',
+            teg_desc: post.teg_desc || '',
+            url_mainImg: post.url_mainImg || '',
             create_date: post.create_date || '',
             userCreate: post.userCreate || '',
             lastUpdate_date: new Date() || '',
@@ -131,11 +133,31 @@ export const PostPage = () => {
             )}
             {!isLoading && !showEditForm ? (
                 <div style={{margin: 10}}>
-                    <div>
+                    {post.url_mainImg ? (
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'column',
+                            marginBottom: 20
+                        }}>
+                            <Image
+                                style={{objectFit: 'cover', borderRadius: 5}}
+                                preview={false}
+                                height={'100%'}
+                                width={272}
+                                alt="logo"
+                                src={post.url_mainImg}
+                            />
+                            <Title level={1}>
+                                {post.title}
+                            </Title>
+                        </div>
+                    ) : (
                         <Title level={1}>
                             {post.title}
                         </Title>
-                    </div>
+                    )}
                     <Row size="small">
                         {post?.create_date && (
                             <Col span={12} style={{textAlign: "left"}}>
@@ -161,35 +183,46 @@ export const PostPage = () => {
                     </div>
                 </div>
             ) : (!isLoading && showEditForm && (
-                    <>
-                        <Form style={{margin: 10}}>
-                            <Form.Item>
-                                <Input value={editedPost.title}
-                                       onChange={(e) => setEditedPost({...editedPost, title: e.target.value})}/>
-                            </Form.Item>
-                            <Divider style={{marginBottom: 30}}/>
-                            <Form.Item>
-                                <Input.TextArea rows={4} value={editedPost.short_desc} showCount={true}
-                                                onChange={(e) => setEditedPost({
-                                                    ...editedPost,
-                                                    short_desc: e.target.value
-                                                })}/>
-                            </Form.Item>
-                            <Divider style={{marginBottom: 30}}/>
-                            <Form.Item>
-                                <Input.TextArea rows={20} value={editedPost.full_desc} showCount={true}
-                                                onChange={(e) => setEditedPost({
-                                                    ...editedPost,
-                                                    full_desc: e.target.value
-                                                })}/>
-                            </Form.Item>
-                            <Divider style={{marginBottom: 30}}/>
-                            <Form.Item>
-                                <ButtonUI size={'large'} type="primary" label={"Сохранить изменения"}
-                                          onClick={saveEditConfirm}/>
-                            </Form.Item>
-                        </Form>
-                    </>
+                    <Form style={{margin: 10}}>
+                        <Form.Item>
+                            <Input value={editedPost.title}
+                                   onChange={(e) => setEditedPost({...editedPost, title: e.target.value})}
+                                   placeholder="Заголовок поста"/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Input value={editedPost.teg_desc}
+                                   onChange={(e) => setEditedPost({...editedPost, teg_desc: e.target.value})}
+                                   placeholder="Теги"/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Input value={editedPost.url_mainImg}
+                                   onChange={(e) => setEditedPost({...editedPost, url_mainImg: e.target.value})}
+                                   placeholder="Ссылка на главное фото поста"/>
+                        </Form.Item>
+                        <Divider style={{marginBottom: 30}}/>
+                        <Form.Item>
+                            <Input.TextArea rows={4} value={editedPost.short_desc} showCount={true}
+                                            onChange={(e) => setEditedPost({
+                                                ...editedPost,
+                                                short_desc: e.target.value
+                                            })}
+                                            placeholder="Краткое описание"/>
+                        </Form.Item>
+                        <Divider style={{marginBottom: 30}}/>
+                        <Form.Item>
+                            <Input.TextArea rows={20} value={editedPost.full_desc} showCount={true}
+                                            onChange={(e) => setEditedPost({
+                                                ...editedPost,
+                                                full_desc: e.target.value
+                                            })}
+                                            placeholder="Текс поста"/>
+                        </Form.Item>
+                        <Divider style={{marginBottom: 30}}/>
+                        <Form.Item>
+                            <ButtonUI size={'large'} type="primary" label={"Сохранить изменения"}
+                                      onClick={saveEditConfirm}/>
+                        </Form.Item>
+                    </Form>
                 )
             )}
             {!isLoading && !showEditForm &&

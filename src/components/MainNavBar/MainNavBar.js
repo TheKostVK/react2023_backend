@@ -11,15 +11,11 @@ export const MainNavBar = (props) => {
     const {pathname} = useLocation();
 
     return (
-        <Layout className="layout" style={{background: 'rgba(255, 255, 255, 0.3)'}}>
-            <Header className="header" style={{position: 'fixed', top: 0, width: '100%', zIndex: 999999}}>
-                <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]}
-                      className="main-menu">
-                    <Menu.Item key="logo">
-                        <Link to="/" className="items" style={{filter: 'blur(5px)', backgroundColor: 'darkgrey'}}>
-                            ГЛАВНАЯ
-                        </Link>
-                    </Menu.Item>
+        <Layout>
+            <Header style={{position: 'sticky', top: 0, zIndex: 1, width: '100%'}}>
+                <Menu theme="dark"
+                    mode="horizontal"
+                    defaultSelectedKeys={['2']}>
                     <Menu.Item key="/">
                         <Link to="/" className="items">
                             Главная
@@ -47,7 +43,7 @@ export const MainNavBar = (props) => {
                     </Menu.Item>
                 </Menu>
             </Header>
-            <Content style={{padding: '0 15px 50px', marginTop: 70}}>
+            <Content className="site-layout" style={{padding: '0 15px 50px'}}>
                 <Breadcrumb style={{margin: '16px 0'}}>
                     <Breadcrumb.Item>
                         <Text type="secondary">Путь: </Text>
@@ -55,8 +51,13 @@ export const MainNavBar = (props) => {
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <Content>
-                    <div className="site-layout-content"
-                         style={{background: '#DCDCDC', borderRadius: 10, paddingBottom: 10, paddingTop: 10}}>
+                    <div style={{
+                        padding: 24,
+                        minHeight: 380,
+                        borderRadius: 10,
+                        paddingBottom: 10,
+                        paddingTop: 10
+                    }}>
                         {props.children}
                     </div>
                 </Content>
