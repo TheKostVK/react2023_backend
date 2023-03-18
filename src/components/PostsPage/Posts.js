@@ -142,10 +142,14 @@ export const Posts = () => {
                                         </List.Item>
                                     ) : (
                                         <Card
-                                            style={{width: 300, height: 450, marginBottom: 10}}
+                                            style={{minWidth: 300, height: 500, marginBottom: 10}}
                                             cover={post.url_mainImg ? (
-                                                <img
-                                                    alt="img"
+                                                <Image
+                                                    style={{objectFit: 'cover'}}
+                                                    preview={false}
+                                                    height={350}
+                                                    width={'auto'}
+                                                    alt="logo"
                                                     src={post.url_mainImg}
                                                 />
                                             ) : null}

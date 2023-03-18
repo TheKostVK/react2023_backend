@@ -52,7 +52,6 @@ export const MainNavBar = (props) => {
                 </Breadcrumb>
                 <Content>
                     <div style={{
-                        padding: 24,
                         minHeight: 380,
                         borderRadius: 10,
                         paddingBottom: 10,
