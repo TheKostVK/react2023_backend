@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Typography, Divider, Skeleton, Modal, Row, Col, Result, Form, Input, Image} from "antd";
+import {Typography, Divider, Skeleton, Modal, Row, Col, Result, Form, Input, Image, List} from "antd";
 import {ExclamationCircleFilled} from '@ant-design/icons';
 import moment from "moment";
 import {ButtonUI} from "../UI/ButtonUI/ButtonUI";
@@ -13,6 +13,7 @@ export const PostPage = () => {
     const [isLoading, setLoading] = useState(true);
     const [postError, setPostError] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
+    const [windowSize, setWindowSize] = useState(window.innerWidth);
     const [editedPost, setEditedPost] = useState({
         title: '',
         short_desc: '',
@@ -22,6 +23,17 @@ export const PostPage = () => {
     });
     const {id} = useParams();
     const {confirm} = Modal;
+
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowSize(window.innerWidth);
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
 
     const showConfirm = () => {
@@ -158,20 +170,39 @@ export const PostPage = () => {
                             {post.title}
                         </Title>
                     )}
-                    <Row size="small">
-                        {post?.create_date && (
-                            <Col span={12} style={{textAlign: "left"}}>
-                                <Text type="secondary">Дата публикации: </Text>
-                                {moment(post.create_date).format("DD.MM.YYYY HH:m")}
-                            </Col>
-                        )}
-                        {post?.userCreate && (
-                            <Col span={12} style={{textAlign: "right"}}>
-                                <Text type="secondary">Автор: </Text>
-                                {post.userCreate}
-                            </Col>
-                        )}
-                    </Row>
+                    {windowSize > 635 ? (
+                        <Row size="small">
+                            {post?.create_date && (
+                                <Col span={12} style={{textAlign: "left"}}>
+                                    <Text type="secondary">Дата публикации: </Text>
+                                    {moment(post.create_date).format("DD.MM.YYYY HH:m")}
+                                </Col>
+                            )}
+                            {post?.userCreate && (
+                                <Col span={12} style={{textAlign: "right"}}>
+                                    <Text type="secondary">Автор: </Text>
+                                    {post.userCreate}
+                                </Col>
+                            )}
+                        </Row>
+                    ) : (
+                        <>
+                            <List>
+                                {post?.userCreate && (
+                                    <List.Item>
+                                        <Text type="secondary">Автор: </Text>
+                                        {post.userCreate}
+                                    </List.Item>
+                                )}
+                                {post?.create_date && (
+                                <List.Item>
+                                    <Text type="secondary">Дата публикации: </Text>
+                                    {moment(post.create_date).format("DD.MM.YYYY HH:m")}
+                                </List.Item>
+                                )}
+                            </List>
+                        </>
+                    )}
                     <div>
                         <Divider style={{marginBottom: 30}}/>
                     </div>
@@ -227,23 +258,47 @@ export const PostPage = () => {
             )}
             {!isLoading && !showEditForm &&
                 <>
-                    <Divider style={{marginTop: 30}}/>
-                    <Row size="small" style={{marginBottom: 20}}>
-                        {post?.create_date && (
-                            <Col span={12} style={{textAlign: "left"}}>
-                                <Text type="secondary">Последнее обновление: </Text>
-                                {moment(post.lastUpdate_date).format("DD.MM.YYYY HH:m")}
-                            </Col>
-                        )}
-                        {post?.userCreate && (
-                            <Col span={12} style={{textAlign: "right"}}>
-                                <Text type="secondary">Внес правки: </Text>
-                                {post.userUpdate}
-                            </Col>
-                        )}
-                    </Row>
-                    <ButtonUI size={'large'} style={{marginTop: 10, marginBottom: 10}} type="primary"
-                              label={"Редактировать пост"} onClick={showConfirm}/>
+                    {windowSize > 635 ? (
+                        <>
+                            <Divider style={{marginTop: 30}}/>
+                            <Row size="small" style={{marginBottom: 20}}>
+                                {post?.create_date && (
+                                    <Col span={12} style={{textAlign: "left"}}>
+                                        <Text type="secondary">Последнее обновление: </Text>
+                                        {moment(post.lastUpdate_date).format("DD.MM.YYYY HH:m")}
+                                    </Col>
+                                )}
+                                {post?.userCreate && (
+                                    <Col span={12} style={{textAlign: "right"}}>
+                                        <Text type="secondary">Внес правки: </Text>
+                                        {post.userUpdate}
+                                    </Col>
+                                )}
+                            </Row>
+                            <ButtonUI size={'large'} style={{marginTop: 10, marginBottom: 10}} type="primary"
+                                      label={"Редактировать пост"} onClick={showConfirm}/>
+                        </>
+                    ) : (
+                        <>
+                            <Divider style={{marginTop: 30}}/>
+                            <List size="small" style={{marginBottom: 20}}>
+                                {post?.userCreate && (
+                                    <List.Item>
+                                        <Text type="secondary">Внес правки: </Text>
+                                        {post.userUpdate}
+                                    </List.Item>
+                                )}
+                                {post?.create_date && (
+                                    <List.Item>
+                                        <Text type="secondary">Последнее обновление: </Text>
+                                        {moment(post.lastUpdate_date).format("DD.MM.YYYY HH:m")}
+                                    </List.Item>
+                                )}
+                            </List>
+                            <ButtonUI size={'large'} style={{marginTop: 10, marginBottom: 10}} type="primary"
+                                      label={"Редактировать пост"} onClick={showConfirm}/>
+                        </>
+                    )}
                 </>
             }
         </div>

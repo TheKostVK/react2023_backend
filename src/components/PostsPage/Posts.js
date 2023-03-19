@@ -10,7 +10,6 @@ import {
     MessageOutlined,
     StarOutlined,
     SettingOutlined,
-    EditOutlined,
     EllipsisOutlined,
     CodeSandboxCircleFilled
 } from "@ant-design/icons";
@@ -142,7 +141,7 @@ export const Posts = () => {
                                         </List.Item>
                                     ) : (
                                         <Card
-                                            style={{minWidth: 300, height: 500, marginBottom: 10}}
+                                            style={{minWidth: 250, height: 500, marginBottom: 10}}
                                             cover={post.url_mainImg ? (
                                                 <Image
                                                     style={{objectFit: 'cover'}}
@@ -155,7 +154,7 @@ export const Posts = () => {
                                             ) : null}
                                             actions={[
                                                 <SettingOutlined key="setting"/>,
-                                                <EditOutlined key="edit"/>,
+                                                <ButtonUI label={'Читать'} onClick={() => goToPost(post._id)}/>,
                                                 <EllipsisOutlined key="ellipsis"/>,
                                             ]}
                                         >
