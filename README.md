@@ -14,7 +14,7 @@
 </tr>
 <tr>
 <td><p style="color: brown">ReactJS v18</p></td>
-<td><p style="color: brown">NodeJS/ES6/p></td>
+<td><p style="color: brown">NodeJS/ES6</p></td>
 </tr>
 <tr>
 <td>
