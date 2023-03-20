@@ -1,9 +1,12 @@
 import './App.css';
 import './mycss.css';
-import {MainNavBar, PostPage, Posts} from './components/';
-import {Card, Skeleton} from 'antd';
-import React, {useState} from 'react';
-import {Link, Route, Routes, useLocation} from "react-router-dom";
+import {ButtonUI, MainNavBar, PostPage, Posts} from './components/';
+import {Result, List, Avatar, Skeleton, Divider} from 'antd';
+import {useState, useEffect} from "react";
+import React from 'react';
+import {Route, Routes, useLocation} from "react-router-dom";
+import Title from "antd/es/typography/Title";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 function App() {
@@ -20,133 +23,74 @@ function App() {
 }
 
 
-const HomePage = () => {
-    // Состояния для списка пользователей, постов пользователя и кнопки
-    const [users, setUsers] = useState([]);
-    const [userPosts, setUserPosts] = useState([]);
-    const [usersButtonLabel, setUsersButtonLabel] = useState('Получить список пользователей');
-    const [isLoading, setLoading] = useState(false);
+function HomePage() {
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
 
-
-    // Функция для получения постов пользователей и списка пользователей
-    const getUsersAndPosts = async () => {
-        try {
-            const [usersResponse, postsResponse] = await Promise.all([
-                fetch('https://jsonplaceholder.typicode.com/users'),
-                fetch('https://jsonplaceholder.typicode.com/posts'),
-            ]);
-            const [usersData, postsData] = await Promise.all([
-                usersResponse.json(),
-                postsResponse.json(),
-            ]);
-            // Если данные получены, сохраняем их в состояние
-            if (Array.isArray(usersData) && usersData.length > 0) {
-                setUsers(usersData);
-            }
-            if (Array.isArray(postsData) && postsData.length > 0) {
-                setUserPosts(postsData);
-            }
-        } catch (error) {
-            console.error('Ошибка получения данных: ', error);
+    const loadMoreData = () => {
+        if (loading) {
+            return;
         }
-        setLoading(false)
+        setLoading(true);
+        fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
+            .then((res) => res.json())
+            .then((body) => {
+                setData([...data, ...body.results]);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
     };
 
-
-    // Функция, которая вызывается при нажатии на кнопку "Получить список пользователей"
-    const handleGetUsers = async () => {
-        try {
-            setLoading(true);
-            setUsersButtonLabel('Обновить список пользователей');
-            // Получаем список пользователей и их постов
-            await getUsersAndPosts();
-            // Обновляем надпись на кнопке
-        } catch (error) {
-            setUsersButtonLabel('Попытаться получить список пользователей еще раз');
-            console.error('Ошибка получения списка пользователей: ', error);
-        }
-    };
-
-
-    // Функция для форматирования даты
-    const formatDate = (date) => {
-        return new Intl.DateTimeFormat('ru-RU').format(date);
-    };
+    useEffect(() => {
+        loadMoreData();
+    }, []);
 
 
     return (
-        <div>
-            <h1 style={{margin: 15}}>Список пользователей:</h1>
-            <button style={{margin: 15}} className="button-main" type="button" onClick={handleGetUsers}>
-                {usersButtonLabel}
-            </button>
-            {usersButtonLabel !== 'Получить список пользователей' && (
-                <p style={{margin: 15}}>
-                    Дата последнего обновления: <strong
-                    className="subsection-performance-headline">{formatDate(new Date())}</strong>
-                </p>
-            )}
-            {isLoading && (
-                <>
-                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
-                        <Skeleton active/>
-                    </Card>
-                    <Card title={<Skeleton.Input active/>} bordered={false} style={{margin: 20}}>
-                        <Skeleton active/>
-                    </Card>
-                </>
-            )}
-            <div>
-                {users.map((user) => {
-                    const userPostList = userPosts.filter((post) => post.userId === user.id);
-                    return (
-                        <>
-                            {!isLoading && (
-                                <Card style={{margin: 20}} headStyle={{background: 'dimgrey', color: '#fff'}}
-                                      title={user.name}
-                                      key={user.id}>
-                                    <p>
-                                        <strong>Email: </strong>
-                                        <strong style={{color: 'red'}}>{user.email}</strong>
-                                    </p>
-                                    <p>
-                                        <strong>Номер телефона: </strong>
-                                        <strong style={{color: '#6A5ACD'}}>{user.phone}</strong>
-                                    </p>
-                                    <p>
-                                        <strong>Веб-сайт: </strong>
-                                        <a href={user.website}>{user.website}</a>
-                                    </p>
-                                    <div style={{border: '1px solid #000', borderRadius: 2}}>
-                                        <details>
-                                            <summary style={{fontWeight: 'bold', marginBottom: 10}}>
-                                                Посты пользователя
-                                            </summary>
-                                            {userPostList.length > 0 ? (
-                                                userPostList.map((post) => (
-                                                    <Card
-                                                        title={post.title}
-                                                        style={{margin: 10}}
-                                                        headStyle={{background: 'dimgrey', color: '#fff'}}
-                                                        key={post.id}
-                                                    >
-                                                        <p>{post.body}</p>
-                                                    </Card>
-                                                ))
-                                            ) : (
-                                                <p style={{margin: 10}}>Постов нет</p>
-                                            )}
-                                        </details>
-                                    </div>
-                                </Card>
-                            )}
-                        </>
-                    );
-                })}
+        <>
+            <Title level={1} style={{textAlign: "center"}}>Главная</Title>
+            <div>здесь был текст</div>
+            <p>
+                Тут будут показаны последние комментарии и посты, а так же пользователи которые зарегистрировались
+                недавно))
+            </p>
+            <div
+                id="scrollableDiv"
+                style={{
+                    height: 400,
+                    overflow: 'auto',
+                    padding: '0 16px',
+                    border: '1px solid rgba(140, 140, 140, 0.35)',
+                }}
+            >
+                <InfiniteScroll
+                    dataLength={data.length}
+                    next={loadMoreData}
+                    hasMore={data.length < 50}
+                    loader={<Skeleton avatar paragraph={{rows: 1}} active/>}
+                    endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                    scrollableTarget="scrollableDiv"
+                >
+                    <List
+                        dataSource={data}
+                        renderItem={(item) => (
+                            <List.Item key={item.email}>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item.picture.large}/>}
+                                    title={<a href="https://ant.design">{item.name.last}</a>}
+                                    description={item.email}
+                                />
+                                <div>Content</div>
+                            </List.Item>
+                        )}
+                    />
+                </InfiniteScroll>
             </div>
-        </div>
-    )
-}
+        </>
+    );
+};
 
 
 const NotFoundError = () => {
@@ -155,11 +99,16 @@ const NotFoundError = () => {
     const error = new Error(message);
     error.statusCode = 404;
     return (
-        <div style={{margin: 15}}>
-            <h1>404 Page not found</h1>
-            <p>{message}</p>
-            <Link className="button-main" to="/" style={{textDecoration: 'none'}}>Вернуться на главную</Link>
-        </div>
+        <Result
+            status="404"
+            title="404"
+            subTitle={message}
+            extra={
+                <ButtonUI type={"primary"} className={"ant-btn-primary ant-btn"} to={"/"}
+                          style={{textDecoration: 'none'}}
+                          label={"Вернуться на главную"}/>
+            }
+        />
     );
 };
 

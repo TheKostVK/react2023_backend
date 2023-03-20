@@ -3,21 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {MyContext} from "./context/myContext";
 import {BrowserRouter} from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import {store} from "./store/store";
+import {Provider} from "react-redux";
 
-const data = {
-    text: 'Hello world context'
-}
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
       <BrowserRouter>
-          <MyContext.Provider value={data}>
+          <Provider store={store}>
                 <App />
-          </MyContext.Provider>
+          </Provider>
       </BrowserRouter>
   </React.StrictMode>
 );

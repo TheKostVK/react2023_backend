@@ -4,7 +4,6 @@ const router = express.Router();
 
 // GET request
 router.get("/", (req, res) => {
-    console.log("GET request received");
     const response = {
         ok: true,
         errMsg: "GET method",
@@ -14,7 +13,6 @@ router.get("/", (req, res) => {
 
 // POST request
 router.post("/", (req, res) => {
-    console.log("POST request received. Body: ", req.body);
     const response = {
         ok: true,
         errMsg: "POST method",

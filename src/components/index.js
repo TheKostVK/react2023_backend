@@ -1,5 +1,4 @@
-export { HelloWorld as HelloWorld}  from './HelloWorld/HelloWorld'
-export { ButtonUI as ButtonUI } from './UI/ButtonUI/ButtonUI'
-export { MainNavBar as MainNavBar } from './MainNavBar/MainNavBar'
-export { Posts as Posts } from './PostsPage/Posts'
-export { PostPage as PostPage } from './PostPage/PostPage'
+export { ButtonUI } from './UI/ButtonUI/ButtonUI';
+export { MainNavBar } from './MainNavBar/MainNavBar';
+export { Posts } from './PostsPage/Posts';
+export { PostPage } from './PostPage/PostPage';
