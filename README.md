@@ -1,4 +1,4 @@
-<div style="text-align: center">
+<div align="center">
 <p>Проект ReactJS</p>
 <p>ide: WebStorm -v 2022.3</p>
 <p>Выполненные задания находятся в ветке <span style="color: cyan">Releases</span></p>
@@ -7,7 +7,7 @@
 </div>
 
 
-<table style="text-align: center">
+<table align="center">
 <tr>
 <th style="color: blueviolet; font-size: large">Frontend</th>
 <th style="color: blueviolet; font-size: large">Backend</th>
