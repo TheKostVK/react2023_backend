@@ -1,5 +1,5 @@
 <div align="center">
-<p>Проект ReactJS</p>
+<p>Проект ReactJS Backend</p>
 <p>ide: WebStorm -v 2022.3</p>
 <p>Выполненные задания находятся в ветке <span style="color: cyan">Releases</span></p>
 <p>Выполнили: <a href="https://github.com/TheKostVK">TheKostVK</a> и <a href="https://github.com/b1abb">b1abb</a></p>
