@@ -1,5 +1,5 @@
 {
-  "name": "react2023",
+  "name": "react2023_backend",
   "version": "2.0.0",
   "description": "Домашняя работа двух студентов ПсковГУ",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "start": "node index.js",
     "start:dev": "nodemon index.js"
   },
-  "author": "TheKostVK, Blabb1",
+  "author": "TheKostVK, b1abb",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
