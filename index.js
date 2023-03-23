@@ -29,7 +29,7 @@ app.use(cors());
 app.use('/media', express.static('media'));
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
-app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
+app.post('/auth/registration', registerValidation, handleValidationErrors, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
