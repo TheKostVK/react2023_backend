@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
 import cors from 'cors';
+import * as path from "path";
 
 import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
@@ -13,39 +14,46 @@ mongoose.connect(
 
 const app = express();
 
+
+// Настройки хранения загруженных файлов
 const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
-        cb(null, 'media/uploads');
+    destination: (req, file, cb) => {
+        cb(null, 'media/uploads/'); // Папка для хранения загруженных файлов
     },
-    filename: (_, file, cb) => {
-        cb(null, file.originalname);
+    filename: (req, file, cb) => {
+        const extension = path.extname(file.originalname);
+        const basename = path.basename(file.originalname, extension);
+        cb(null, `${basename}-${Date.now()}${extension}`);
     },
 });
 
+// Загрузчик файла с настройками хранения
 const upload = multer({storage});
 
-app.use(express.json());
-app.use(cors());
-app.use('/media', express.static('media'));
-
-app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
-app.post('/auth/registration', registerValidation, handleValidationErrors, UserController.register);
-app.get('/auth/me', checkAuth, UserController.getMe);
-
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
-    res.json({
-        url: `/media/uploads/${req.file.originalname}`,
-    });
+// Метод для загрузки файла
+app.post('/upload', cors(), upload.single('image'), (req, res) => {
+    // Возвращаем URL загруженной картинки в качестве ответа на запрос
+    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;
+    res.json({url: url});
 });
 
-// app.get('/tags', PostController.getLastTags);
+app.use(cors());
+app.use(express.json());
 
-app.get('/posts', PostController.getAll);
-app.get('/posts/tags', PostController.getLastTags);
-app.get('/posts/:id', PostController.getOne);
-app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
-app.delete('/posts/:id', checkAuth, PostController.remove);
-app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
+app.use('/media', express.static('media'));
+
+app.post('/auth/login', cors(), loginValidation, handleValidationErrors, UserController.login);
+app.post('/auth/registration', cors(), registerValidation, handleValidationErrors, UserController.register);
+app.get('/auth/me', cors(), checkAuth, UserController.getMe)
+
+// app.get('/tags',cors(), PostController.getLastTags);
+
+app.get('/posts', cors(), PostController.getAll);
+app.get('/posts/tags', cors(), PostController.getLastTags);
+app.get('/posts/:id', cors(), PostController.getOne);
+app.post('/posts', cors(), checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
+app.delete('/posts/:id', cors(), checkAuth, PostController.remove);
+app.patch('/posts/:id', cors(), checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 
 app.listen(4444, (err) => {
     if (err) {
