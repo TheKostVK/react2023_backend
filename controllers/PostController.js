@@ -43,7 +43,7 @@ export const getOne = async (req, res) => {
             {
                 returnDocument: 'after',
             }
-        ).exec();
+        ).populate('user').exec();
 
         if (!post) {
             return res.status(404).json({
