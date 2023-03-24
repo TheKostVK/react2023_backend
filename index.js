@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
+import fs from "fs";
 import cors from 'cors';
 import * as path from "path";
 
@@ -17,6 +18,9 @@ const app = express();
 // Настройки хранения загруженных файлов
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        if (!fs.existsSync('uploads')) {
+            fs.mkdir('uploads');
+        }
         cb(null, 'media/uploads/'); // Папка для хранения загруженных файлов
     },
     filename: (req, file, cb) => {
