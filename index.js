@@ -8,8 +8,7 @@ import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
 
-mongoose.connect(MONGODB_URL,
-).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
+mongoose.connect(MONGODB_URL,).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
 const app = express();
 
