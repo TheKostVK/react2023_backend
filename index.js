@@ -14,7 +14,6 @@ mongoose.connect(
 
 const app = express();
 
-
 // Настройки хранения загруженных файлов
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
