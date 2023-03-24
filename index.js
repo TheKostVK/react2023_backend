@@ -33,7 +33,7 @@ const upload = multer({storage});
 // Метод для загрузки файла
 app.post('/upload', cors(), upload.single('image'), (req, res) => {
     // Возвращаем URL загруженной картинки в качестве ответа на запрос
-    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;
+    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;`a`
     res.json({url: url});
 });
 
