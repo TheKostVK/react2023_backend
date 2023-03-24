@@ -37,7 +37,7 @@ const upload = multer({storage});
 // Обрабатываем POST-запрос на загрузку файла
 app.post('/upload', upload.single('image'), (req, res) => {
     // Возвращаем URL загруженной картинки в качестве ответа на запрос
-    const url = `${process.env.BASE_URL}/${req.file.path}`;
+    const url = `${process.env.BASE_URL}/${req.file.path}` || `${req.protocol}://${req.get('host')}/${req.file.path}`;
     res.json({ url });
 });
 
