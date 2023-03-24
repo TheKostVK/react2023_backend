@@ -9,7 +9,7 @@ import {loginValidation, postCreateValidation, registerValidation} from "./valid
 import {checkAuth, handleValidationErrors} from './utils/index.js';
 
 mongoose.connect(
-    REACT_APP_API_DB_URL
+    process.env.REACT_APP_API_DB_URL,
 ).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
 const app = express();
