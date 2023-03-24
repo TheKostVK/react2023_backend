@@ -18,6 +18,7 @@ const app = express();
 // Настройки хранения загруженных файлов
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        // Создание папки при ее отсутствии
         if (!fs.existsSync('uploads')) {
             fs.mkdir('uploads');
         }
