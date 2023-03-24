@@ -8,8 +8,8 @@ import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
 
-mongoose.connect(
-    'mongodb+srv://TheKost:AD6-9PP-Vt9-n6D@cluster0.fkbk1nc.mongodb.net/blog?retryWrites=true&w=majority',
+const MONGODB_URL = 'mongodb+srv://TheKost:AD6-9PP-Vt9-n6D@cluster0.fkbk1nc.mongodb.net/blog?retryWrites=true&w=majority';
+mongoose.connect(MONGODB_URL,
 ).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
 const app = express();
@@ -33,7 +33,8 @@ const upload = multer({storage});
 // Метод для загрузки файла
 app.post('/upload', cors(), upload.single('image'), (req, res) => {
     // Возвращаем URL загруженной картинки в качестве ответа на запрос
-    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;`a`
+    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;
+    `a`
     res.json({url: url});
 });
 
@@ -55,7 +56,7 @@ app.post('/posts', cors(), checkAuth, postCreateValidation, handleValidationErro
 app.delete('/posts/:id', cors(), checkAuth, PostController.remove);
 app.patch('/posts/:id', cors(), checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
     if (err) {
         return console.log(err);
     }
