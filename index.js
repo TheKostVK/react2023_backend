@@ -8,7 +8,9 @@ import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
 
-mongoose.connect(REACT_APP_API_MONGODB_URL).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
+mongoose.connect(
+    'mongodb+srv://TheKost:AD6-9PP-Vt9-n6D@cluster0.fkbk1nc.mongodb.net/blog?retryWrites=true&w=majority',
+).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
 const app = express();
 
@@ -31,8 +33,7 @@ const upload = multer({storage});
 // Метод для загрузки файла
 app.post('/upload', cors(), upload.single('image'), (req, res) => {
     // Возвращаем URL загруженной картинки в качестве ответа на запрос
-    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;
-    `a`
+    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;`a`
     res.json({url: url});
 });
 
