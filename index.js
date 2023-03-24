@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
+import fs from "fs";
 import cors from 'cors';
 import * as path from "path";
 
@@ -8,15 +9,19 @@ import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
 
-mongoose.connect(MONGODB_URL,
+mongoose.connect(
+    'mongodb+srv://TheKost:AD6-9PP-Vt9-n6D@cluster0.fkbk1nc.mongodb.net/blog?retryWrites=true&w=majority'
 ).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
 const app = express();
 
-
 // Настройки хранения загруженных файлов
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        // Создание папки при ее отсутствии
+        if (!fs.existsSync('uploads')) {
+            fs.mkdir('uploads');
+        }
         cb(null, 'media/uploads/'); // Папка для хранения загруженных файлов
     },
     filename: (req, file, cb) => {
@@ -32,8 +37,7 @@ const upload = multer({storage});
 // Метод для загрузки файла
 app.post('/upload', cors(), upload.single('image'), (req, res) => {
     // Возвращаем URL загруженной картинки в качестве ответа на запрос
-    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;
-    `a`
+    const url = `${req.protocol}://${req.get('host')}/${req.file.path}`;`a`
     res.json({url: url});
 });
 
