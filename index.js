@@ -1,12 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
-import multer from "multer";
 import cors from 'cors';
-import * as path from "path";
 
 import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
+import multer from 'multer';
+import {Dropbox} from 'dropbox';
+import fs from 'fs';
+import * as path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,6 +21,14 @@ mongoose.connect(
 
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
+// Создаем экземпляр Dropbox с помощью access token
+const dbx = new Dropbox({accessToken: process.env.DROPBOX_ACCESS_TOKEN});
+
+// Загрузчик файла с настройками хранения
+const upload = multer();
 
 // Настройки хранения загруженных файлов
 const storage = multer.diskStorage({
@@ -32,19 +42,30 @@ const storage = multer.diskStorage({
     },
 });
 
-// Загрузчик файла с настройками хранения
-const upload = multer({storage});
 
 // Обрабатываем POST-запрос на загрузку файла
-app.post('/upload', upload.single('image'), (req, res) => {
-    // Возвращаем URL загруженной картинки в качестве ответа на запрос
-    const url = `${process.env.BASE_URL}/${req.file.path}` || `${req.protocol}://${req.get('host')}/${req.file.path}`;
-    res.json({url});
+app.post('/upload', cors(), upload.single('image'), (req, res) => {
+    try {
+        const file = req.file.buffer;
+        const dropboxPath = '/uploads/' + req.file.originalname;
+        dbx.filesUpload({path: dropboxPath, contents: file})
+            .then((response) => {
+                if (response.result.hasOwnProperty('url')) {
+                    const url = response.result.url;
+                    res.json({url});
+                } else {
+                    res.status(500).json({error: 'Failed to get URL of uploaded file'});
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                res.status(500).json({error: 'Failed to upload file'});
+            });
+    } catch (err) {
+        console.warn(err);
+        res.status(400).json({error: 'Invalid request'});
+    }
 });
-
-
-app.use(cors());
-app.use(express.json());
 
 app.use('/media', express.static('media'));
 
