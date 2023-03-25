@@ -4,13 +4,10 @@ import multer from "multer";
 import fs from "fs";
 import cors from 'cors';
 import * as path from "path";
-import jsonfile from 'jsonfile';
 
 import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
-
-// const config = jsonfile.readFileSync('secret.json');
 
 mongoose.connect("mongodb+srv://TheKost:AD6-9PP-Vt9-n6D@cluster0.fkbk1nc.mongodb.net/blog?retryWrites=true&w=majority").then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
