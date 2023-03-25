@@ -1,4 +1,4 @@
 /node_modules/
 .idea
-secret.env
+secret.json
 vercel.json

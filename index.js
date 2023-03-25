@@ -4,13 +4,18 @@ import multer from "multer";
 import fs from "fs";
 import cors from 'cors';
 import * as path from "path";
+import jsonfile from 'jsonfile';
 
 import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
 
+const config = jsonfile.readFileSync('secret.json');
 
-mongoose.connect(process.env.REACT_APP_API_DB_URL).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
+const REACT_APP_API_DB_URL_local = config.REACT_APP_API_DB_URL_local;
+
+
+mongoose.connect(process.env.REACT_APP_API_DB_URL || REACT_APP_API_DB_URL_local).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
 const app = express();
 
@@ -37,7 +42,7 @@ const upload = multer({storage});
 app.post('/upload', upload.single('image'), (req, res) => {
     // Возвращаем URL загруженной картинки в качестве ответа на запрос
     const url = `${process.env.BASE_URL}/${req.file.path}` || `${req.protocol}://${req.get('host')}/${req.file.path}`;
-    res.json({ url });
+    res.json({url});
 });
 
 app.use(cors());
