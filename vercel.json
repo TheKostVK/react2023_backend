@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@now/node-server"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
@@ -8,10 +14,5 @@
   ],
   "env": {
     "REACT_APP_API_DB_URL": "@mongoURL"
-  },
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
   }
 }
