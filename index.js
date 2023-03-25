@@ -13,6 +13,7 @@ import {checkAuth, handleValidationErrors} from './utils/index.js';
 const config = jsonfile.readFileSync('secret.json');
 
 const REACT_APP_API_DB_URL_local = config.REACT_APP_API_DB_URL_local;
+const accessToken = config.AccessToken;
 
 
 mongoose.connect(process.env.REACT_APP_API_DB_URL || REACT_APP_API_DB_URL_local).then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
