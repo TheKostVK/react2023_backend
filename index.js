@@ -30,32 +30,22 @@ const dbx = new Dropbox({accessToken: process.env.DROPBOX_ACCESS_TOKEN});
 // Загрузчик файла с настройками хранения
 const upload = multer();
 
-// Настройки хранения загруженных файлов
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'media/uploads/'); // Папка для хранения загруженных файлов
-    },
-    filename: (req, file, cb) => {
-        const extension = path.extname(file.originalname);
-        const basename = path.basename(file.originalname, extension);
-        cb(null, `${basename}-${Date.now()}${extension}`);
-    },
-});
 
-
-// Обрабатываем POST-запрос на загрузку файла
 app.post('/upload', cors(), upload.single('image'), (req, res) => {
     try {
         const file = req.file.buffer;
         const dropboxPath = '/uploads/' + req.file.originalname;
         dbx.filesUpload({path: dropboxPath, contents: file})
-            .then((response) => {
-                if (response.result.hasOwnProperty('url')) {
-                    const url = response.result.url;
-                    res.json({url});
-                } else {
-                    res.status(500).json({error: 'Failed to get URL of uploaded file'});
-                }
+            .then(async (response) => {
+                const sharedLinkResponse = await dbx.sharingCreateSharedLinkWithSettings({
+                    path: response.result.path_display,
+                    settings: {
+                        requested_visibility: {
+                            ".tag": "public"
+                        }
+                    }
+                });
+                res.json({url: sharedLinkResponse.result.url});
             })
             .catch((error) => {
                 console.error(error);
@@ -66,6 +56,7 @@ app.post('/upload', cors(), upload.single('image'), (req, res) => {
         res.status(400).json({error: 'Invalid request'});
     }
 });
+
 
 app.use('/media', express.static('media'));
 
