@@ -1,29 +1,22 @@
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
-import fs from "fs";
 import cors from 'cors';
 import * as path from "path";
-import jsonfile from 'jsonfile';
 
 import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
-
-// const config = jsonfile.readFileSync('secret.json');
 
 mongoose.connect("mongodb+srv://TheKost:AD6-9PP-Vt9-n6D@cluster0.fkbk1nc.mongodb.net/blog?retryWrites=true&w=majority").then(() => console.log('DB ok')).catch((err) => console.log('DB error', err));
 
 
 const app = express();
 
+
 // Настройки хранения загруженных файлов
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // Создание папки при ее отсутствии
-        if (!fs.existsSync('uploads')) {
-            fs.mkdir('uploads');
-        }
         cb(null, 'media/uploads/'); // Папка для хранения загруженных файлов
     },
     filename: (req, file, cb) => {
@@ -42,6 +35,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
     const url = `${process.env.BASE_URL}/${req.file.path}` || `${req.protocol}://${req.get('host')}/${req.file.path}`;
     res.json({url});
 });
+
 
 app.use(cors());
 app.use(express.json());

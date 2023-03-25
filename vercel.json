@@ -2,22 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.js",
-      "use": "@now/node-server"
+      "src": "./index.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "index.js"
+      "src": "/(.*)",
+      "dest": "/"
     }
-  ],
-  "env": {
-    "REACT_APP_API_DB_URL": "@mongoURL"
-  },
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  }
+  ]
 }
+
