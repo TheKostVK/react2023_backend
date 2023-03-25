@@ -21,7 +21,12 @@ mongoose.connect(
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 
 // Создаем экземпляр Dropbox с помощью access token
@@ -37,15 +42,10 @@ app.post('/upload', cors(), upload.single('image'), (req, res) => {
         const dropboxPath = '/uploads/' + req.file.originalname;
         dbx.filesUpload({path: dropboxPath, contents: file})
             .then(async (response) => {
-                const sharedLinkResponse = await dbx.sharingCreateSharedLinkWithSettings({
-                    path: response.result.path_display,
-                    settings: {
-                        requested_visibility: {
-                            ".tag": "public"
-                        }
-                    }
+                const directLinkResponse = await dbx.filesGetTemporaryLink({
+                    path: response.result.path_display
                 });
-                res.json({url: sharedLinkResponse.result.url});
+                res.json({url: directLinkResponse.result.link});
             })
             .catch((error) => {
                 console.error(error);
