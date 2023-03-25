@@ -11,8 +11,5 @@
       "src": "/api/(.*)",
       "dest": "index.js"
     }
-  ],
-  "env": {
-    "REACT_APP_API_DB_URL": "@mongoURL"
-  }
+  ]
 }
