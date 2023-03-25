@@ -39,7 +39,11 @@ const upload = multer();
 app.post('/upload', cors(), upload.single('image'), (req, res) => {
     try {
         const file = req.file.buffer;
-        const dropboxPath = '/uploads/' + req.file.originalname;
+        const fileName = req.file.originalname;
+        const extension = fileName.substring(fileName.lastIndexOf('.'));
+        const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const newFileName = fileName.replace(extension, '') + '_' + randomString + extension;
+        const dropboxPath = '/uploads/' + newFileName;
         dbx.filesUpload({path: dropboxPath, contents: file})
             .then(async (response) => {
                 const directLinkResponse = await dbx.filesGetTemporaryLink({
