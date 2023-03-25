@@ -7,6 +7,10 @@ import * as path from "path";
 import {PostController, UserController} from './controllers/index.js';
 import {loginValidation, postCreateValidation, registerValidation} from "./validations.js";
 import {checkAuth, handleValidationErrors} from './utils/index.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 mongoose.connect(
     process.env.REACT_APP_API_DB_URL
