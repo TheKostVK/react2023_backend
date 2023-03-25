@@ -3,15 +3,15 @@
   "builds": [
     {
       "src": "index.js",
-      "use": "@vercel/node"
+      "use": "@now/node-server"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/index.js"
+      "src": "/api/(.*)",
+      "dest": "index.js"
     }
-  ]
+  ],
   "env": {
     "REACT_APP_API_DB_URL": "@mongoURL"
   },
