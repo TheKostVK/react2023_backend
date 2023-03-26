@@ -30,28 +30,39 @@ const dbx = new Dropbox({accessToken: process.env.DROPBOX_ACCESS_TOKEN});
 const upload = multer();
 
 
-app.post('/upload', cors(), upload.single('image'), (req, res) => {
+app.post('/upload', cors(), upload.single('image'), async (req, res) => {
     try {
         const file = req.file.buffer;
         const fileName = req.file.originalname;
         const extension = fileName.substring(fileName.lastIndexOf('.'));
-        const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        const newFileName = fileName.replace(extension, '') + '_' + randomString + extension;
+        const randomString =
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15);
+        const newFileName =
+            fileName.replace(extension, '') + '_' + randomString + extension;
         const dropboxPath = `/uploads/${req.body.savePath}` + newFileName;
-        dbx.filesUpload({path: dropboxPath, contents: file})
-            .then(async (response) => {
-                const directLinkResponse = await dbx.filesGetTemporaryLink({
-                    path: response.result.path_display
-                });
-                res.json({url: directLinkResponse.result.link});
-            })
-            .catch((error) => {
-                console.error(error);
-                res.status(500).json({error: 'Ошибка при выгрузке файла'});
-            });
-    } catch (err) {
-        console.warn(err);
-        res.status(400).json({error: 'Неправильный запрос'});
+
+        const uploadResponse = await dbx.filesUpload({
+            path: dropboxPath,
+            contents: file,
+        });
+
+        const sharedLinkResponse = await dbx.sharingCreateSharedLinkWithSettings({
+            path: uploadResponse.result.path_display,
+            settings: {
+                requested_visibility: {'.tag': 'public'},
+            },
+        });
+
+        const downloadUrl = sharedLinkResponse.result.url.replace(
+            'www.dropbox.com',
+            'dl.dropboxusercontent.com'
+        );
+
+        res.json({url: downloadUrl});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Ошибка при выгрузке файла'});
     }
 });
 
