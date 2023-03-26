@@ -18,7 +18,7 @@ export const getLastTags = async (req, res) => {
 
 export const getAll = async (req, res) => {
     try {
-        const posts = await PostModel.find().populate('user').exec();
+        const posts = await PostModel.find().populate('user').sort({createdAt: -1}).exec();
 
         res.json(posts);
     } catch (err) {
@@ -28,6 +28,7 @@ export const getAll = async (req, res) => {
         });
     }
 };
+
 
 export const getOne = async (req, res) => {
     try {
