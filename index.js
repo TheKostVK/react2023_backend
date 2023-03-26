@@ -7,8 +7,6 @@ import {loginValidation, postCreateValidation, registerValidation} from "./valid
 import {checkAuth, handleValidationErrors} from './utils/index.js';
 import multer from 'multer';
 import {Dropbox} from 'dropbox';
-import fs from 'fs';
-import * as path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,12 +19,8 @@ mongoose.connect(
 
 const app = express();
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(cors());
+
 app.use(express.json());
 
 // Создаем экземпляр Dropbox с помощью access token
@@ -43,7 +37,7 @@ app.post('/upload', cors(), upload.single('image'), (req, res) => {
         const extension = fileName.substring(fileName.lastIndexOf('.'));
         const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const newFileName = fileName.replace(extension, '') + '_' + randomString + extension;
-        const dropboxPath = '/uploads/' + newFileName;
+        const dropboxPath = `/uploads/${req.body.savePath}` + newFileName;
         dbx.filesUpload({path: dropboxPath, contents: file})
             .then(async (response) => {
                 const directLinkResponse = await dbx.filesGetTemporaryLink({
@@ -53,11 +47,11 @@ app.post('/upload', cors(), upload.single('image'), (req, res) => {
             })
             .catch((error) => {
                 console.error(error);
-                res.status(500).json({error: 'Failed to upload file'});
+                res.status(500).json({error: 'Ошибка при выгрузке файла'});
             });
     } catch (err) {
         console.warn(err);
-        res.status(400).json({error: 'Invalid request'});
+        res.status(400).json({error: 'Неправильный запрос'});
     }
 });
 
