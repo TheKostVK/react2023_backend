@@ -76,6 +76,7 @@ app.get('/auth/me', cors(), checkAuth, UserController.getMe)
 // app.get('/tags',cors(), PostController.getLastTags);
 
 app.get('/posts', cors(), PostController.getAll);
+app.get('/posts/user/:userId', cors(), PostController.getAllByAuthor);
 app.get('/posts/tags', cors(), PostController.getLastTags);
 app.get('/posts/:id', cors(), PostController.getOne);
 app.post('/posts', cors(), checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
