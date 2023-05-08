@@ -29,6 +29,39 @@ export const getAll = async (req, res) => {
     }
 };
 
+export const getPostOnPage = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 5;
+
+    try {
+        const totalPosts = await PostModel.countDocuments();
+
+        const totalPages = Math.ceil(totalPosts / perPage);
+
+        const offset = (page - 1) * perPage;
+        const posts = await PostModel.find()
+            .populate('user')
+            .sort({createdAt: -1})
+            .skip(offset)
+            .limit(Math.min(perPage, totalPosts - offset));
+
+        res.json({
+            posts,
+            pageInfo: {
+                page,
+                perPage,
+                totalPages,
+                totalPosts,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Не удалось получить статьи',
+        });
+    }
+};
+
 
 export const getAllByAuthor = async (req, res) => {
     try {
