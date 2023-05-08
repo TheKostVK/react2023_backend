@@ -8,6 +8,7 @@ import {checkAuth, handleValidationErrors} from './utils/index.js';
 import multer from 'multer';
 import {Dropbox} from 'dropbox';
 import dotenv from 'dotenv';
+import {getPostOnPage} from "./controllers/PostController.js";
 
 dotenv.config();
 
@@ -76,6 +77,7 @@ app.get('/auth/me', cors(), checkAuth, UserController.getMe)
 // app.get('/tags',cors(), PostController.getLastTags);
 
 app.get('/posts', cors(), PostController.getAll);
+app.get('/posts/p', cors(), PostController.getPostOnPage);
 app.get('/posts/user/:userId', cors(), PostController.getAllByAuthor);
 app.get('/posts/tags', cors(), PostController.getLastTags);
 app.get('/posts/:id', cors(), PostController.getOne);
